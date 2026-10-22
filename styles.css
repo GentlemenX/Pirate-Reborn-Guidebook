@@ -2079,9 +2079,10 @@ html:not([data-theme="light"]) .sea-soul-card-edit{border-color:#465d68;border-r
 /* Mobile: give artwork enough width and keep destructive controls below it. */
 @media(max-width:600px){
   #guide-grid.guide-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,86px),1fr));gap:8px}
+  #guide-grid .roster-art>img{display:block;width:100%!important;min-width:100%;max-width:none!important;height:100%!important;max-height:none!important;object-fit:cover!important;object-position:center 18%}
   #guide-grid .roster-art .favorite-button{top:4px;right:4px;width:22px;height:22px;min-width:22px;min-height:22px;padding:0;font-size:12px}
   #guide-grid .roster-art .marker-edit-button{top:4px;left:4px;width:20px;height:20px;min-width:20px;min-height:20px;padding:0;font-size:10px}
-  #guide-grid .roster-art .unit-marker-badges{left:4px;right:4px;bottom:4px;gap:3px;max-width:calc(100% - 8px)}
+  #guide-grid .roster-art .unit-marker-badges{left:auto;right:4px;bottom:4px;gap:3px;max-width:calc(100% - 8px);justify-content:flex-end}
   #guide-grid .roster-art .unit-marker-badges span{padding:3px 5px;font-size:7px}
 
   #wish-banner-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,86px),1fr))!important;gap:7px;padding:8px}
