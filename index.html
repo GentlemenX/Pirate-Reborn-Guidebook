@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f2eee4">
+  <meta name="description" content="Your offline One Piece Pirate Reborn guidebook.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://discord.com">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <script src="startup.js"></script>
+  <link rel="stylesheet" href="styles.css?v=20261022-dialog-scroll-v72">
+  <link rel="stylesheet" href="motion.bundle.css?v=20261021-performance-v1">
+  <title>Pirate Reborn Guidebook</title>
+</head>
+<body>
+  <div id="startup-screen" class="startup-screen" role="status" aria-label="Loading Pirate Reborn Guidebook">
+    <div class="startup-content">
+      <img class="startup-logo" src="./assets/pirate-reborn-app-icon-original.png" alt="">
+      <p class="startup-kicker">PIRATE REBORN</p>
+      <h1>Guidebook</h1>
+      <p class="startup-message">Loading your guidebook…</p>
+      <div class="startup-progress" role="progressbar" aria-label="Loading guidebook"><span></span></div>
+      <small>CHARTING YOUR COURSE</small>
+    </div>
+  </div>
+  <div class="app-shell">
+    <aside class="sidebar" id="app-sidebar" aria-label="App sidebar">
+      <a class="brand sidebar-brand" href="#home" aria-label="OPPR home">
+        <span class="brand-mark"><img src="./assets/pirate-reborn-app-icon-original.png" alt=""></span>
+        <span><strong>OPPR</strong><small>PIRATE REBORN</small></span>
+      </a>
+      <nav class="sidebar-nav" aria-label="Main navigation">
+        <button class="sidebar-link" type="button" data-page="home" aria-current="page"><span class="sidebar-icon">⌂</span>Home</button>
+        <button class="sidebar-link" type="button" data-page="unit-builds"><span class="sidebar-icon">⚔</span>Unit Builds<span class="sidebar-count" id="sidebar-guide-count">0</span></button>
+        <button class="sidebar-link" type="button" data-page="guides"><span class="sidebar-icon">▤</span>Guides</button>
+        <button class="sidebar-link" type="button" data-page="heroine"><span class="sidebar-icon">✿</span>Heroine</button>
+        <button class="sidebar-link" type="button" data-page="artifacts"><span class="sidebar-icon">◈</span>Artifacts</button>
+        <button class="sidebar-link" type="button" data-page="sea-soul"><span class="sidebar-icon">♆</span>Sea Soul</button>
+        <button class="sidebar-link" type="button" data-page="tier-list"><span class="sidebar-icon">▤</span>Tier List</button>
+        <button class="sidebar-link" type="button" data-page="wish-calendar"><span class="sidebar-icon">◷</span>Wish Calendar</button>
+        <button class="sidebar-link" type="button" data-page="events"><span class="sidebar-icon">🗓</span>Events</button>
+        <button class="sidebar-link" type="button" data-page="downloads"><span class="sidebar-icon">⇩</span>Downloads</button>
+      </nav>
+      <button class="sidebar-bottom" id="profile-customize" type="button" aria-label="Open your profile"><span class="sidebar-crew-avatar"><img id="sidebar-crew-avatar" alt="" hidden><span id="sidebar-crew-fallback" aria-hidden="true">✦</span></span><span class="sidebar-profile-copy"><strong id="sidebar-profile-name">Set sail, captain</strong><small id="sidebar-profile-tagline">Your guide deck, at a glance.</small></span><span class="sidebar-profile-edit" aria-hidden="true">⚙</span></button>
+    </aside>
+    <button class="sidebar-backdrop" id="sidebar-backdrop" type="button" aria-label="Close navigation" hidden></button>
+    <div class="app-main">
+    <header class="topbar">
+      <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+      <a class="topbar-home-logo" href="#home" aria-label="Pirate Reborn Guidebook home"><img src="./assets/pirate-reborn-app-icon-original.png" alt=""></a>
+      <div class="topbar-title"><span class="topbar-kicker">PIRATE REBORN</span><strong id="page-title">Home</strong></div>
+      <nav class="top-navigation" aria-label="Page actions"><label class="language-control"><span data-i18n="Language">Language</span><select id="language-select" aria-label="Language"><option value="en">English</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ar">العربية</option></select></label><button id="contact-button" class="theme-toggle discord-action contact-button" type="button" aria-label="Open Discord profile"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M20.317 4.37A19.8 19.8 0 0 0 15.885 3c-.191.329-.403.775-.552 1.126a18.27 18.27 0 0 0-5.465 0A12.64 12.64 0 0 0 9.316 3a19.74 19.74 0 0 0-4.438 1.37C2.077 8.47 1.316 12.47 1.696 16.412a19.9 19.9 0 0 0 5.457 2.755c.44-.605.833-1.245 1.17-1.918-.642-.24-1.255-.537-1.83-.887.153-.113.303-.232.448-.354 3.525 1.645 7.352 1.645 10.835 0 .147.122.297.241.45.354-.576.35-1.19.649-1.833.889.337.673.73 1.313 1.17 1.917a19.88 19.88 0 0 0 5.458-2.755c.445-4.574-.76-8.536-3.204-12.042ZM8.02 13.956c-1.06 0-1.93-.975-1.93-2.174s.853-2.174 1.93-2.174 1.948.984 1.93 2.174c0 1.199-.854 2.174-1.93 2.174Zm7.14 0c-1.06 0-1.93-.975-1.93-2.174s.852-2.174 1.93-2.174c1.077 0 1.947.984 1.93 2.174 0 1.199-.853 2.174-1.93 2.174Z"/></svg><small>Contact</small></button><button id="discord-server-button" class="theme-toggle discord-action" type="button" aria-label="Open Discord server"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M20.317 4.37A19.8 19.8 0 0 0 15.885 3c-.191.329-.403.775-.552 1.126a18.27 18.27 0 0 0-5.465 0A12.64 12.64 0 0 0 9.316 3a19.74 19.74 0 0 0-4.438 1.37C2.077 8.47 1.316 12.47 1.696 16.412a19.9 19.9 0 0 0 5.457 2.755c.44-.605.833-1.245 1.17-1.918-.642-.24-1.255-.537-1.83-.887.153-.113.303-.232.448-.354 3.525 1.645 7.352 1.645 10.835 0 .147.122.297.241.45.354-.576.35-1.19.649-1.833.889.337.673.73 1.313 1.17 1.917a19.88 19.88 0 0 0 5.458-2.755c.445-4.574-.76-8.536-3.204-12.042ZM8.02 13.956c-1.06 0-1.93-.975-1.93-2.174s.853-2.174 1.93-2.174 1.948.984 1.93 2.174c0 1.199-.854 2.174-1.93 2.174Zm7.14 0c-1.06 0-1.93-.975-1.93-2.174s.852-2.174 1.93-2.174c1.077 0 1.947.984 1.93 2.174 0 1.199-.853 2.174-1.93 2.174Z"/></svg><small>Server</small></button><button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false"><span aria-hidden="true">☼</span><small>Light</small></button><button id="install-button" class="button button-quiet install-button" hidden>Install</button><span class="admin-only" aria-hidden="true"><button id="sync-discord" type="button" tabindex="-1">Sync Discord</button><button id="import-button" type="button" tabindex="-1">Import</button><button id="paste-button" type="button" tabindex="-1">Add guide</button></span></nav>
+    </header>
+
+    <nav class="mobile-bottom-nav" aria-label="Primary navigation">
+      <button class="mobile-nav-link" type="button" data-page="home" aria-current="page"><span aria-hidden="true">⌂</span><small>Home</small></button>
+      <button class="mobile-nav-link" type="button" data-page="unit-builds"><span aria-hidden="true">⚔</span><small>Builds</small></button>
+      <button class="mobile-nav-link" type="button" data-page="heroine"><span aria-hidden="true">✿</span><small>Heroines</small></button>
+      <button class="mobile-nav-link" type="button" data-page="artifacts"><span aria-hidden="true">◈</span><small>Artifacts</small></button>
+      <button class="mobile-nav-link" id="mobile-more-button" type="button" aria-haspopup="dialog" aria-controls="mobile-more-dialog" aria-expanded="false"><span aria-hidden="true">•••</span><small>More</small></button>
+    </nav>
+    <dialog id="mobile-more-dialog" class="mobile-more-dialog" aria-labelledby="mobile-more-title">
+      <div class="mobile-more-heading"><h2 id="mobile-more-title">More</h2><button class="dialog-close" id="mobile-more-close" type="button" aria-label="Close more menu">×</button></div>
+      <nav class="mobile-more-links" aria-label="More destinations">
+        <button class="mobile-more-link mobile-more-profile" type="button" data-open-profile><span class="mobile-more-avatar"><img id="mobile-profile-avatar" alt="" hidden><span id="mobile-profile-avatar-fallback" aria-hidden="true">✦</span></span><span class="mobile-more-profile-copy"><strong>Profile</strong><small id="mobile-profile-name">Set sail, captain</small></span></button>
+        <button class="mobile-more-link" id="mobile-add-guide" type="button"><span aria-hidden="true">📚</span>Guides</button>
+        <button class="mobile-more-link" id="mobile-sea-soul" type="button"><span aria-hidden="true">♆</span>Sea Soul</button>
+        <button class="mobile-more-link" type="button" data-page="tier-list"><span aria-hidden="true">📊</span>Tier List</button>
+        <button class="mobile-more-link" type="button" data-page="wish-calendar"><span aria-hidden="true">◷</span>Wish Calendar</button>
+        <button class="mobile-more-link" type="button" data-page="events"><span aria-hidden="true">🗓️</span>Events</button>
+        <button class="mobile-more-link" type="button" data-page="downloads"><span aria-hidden="true">⇩</span>Downloads</button>
+      </nav>
+    </dialog>
+
+    <main>
+      <section class="page-view home-view" data-view="home" id="home-view">
+      <section class="hero compact-hero" id="home">
+        <div id="home-light-rays" aria-hidden="true"></div>
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> YOUR PIRATE REBORN COMPANION</p>
+          <h1 id="home-title">Welcome aboard, captain.</h1>
+          <p class="hero-subtitle">Your home for unit builds, crew ideas, and everything you collect along the voyage.</p>
+          <p id="import-status" class="import-status admin-only" aria-live="polite"></p>
+        </div>
+        <button class="home-feature-panel" id="home-feature-open" type="button" aria-label="Open featured guide">
+          <img id="home-feature-image" alt="" loading="lazy" referrerpolicy="no-referrer" hidden>
+          <span class="home-feature-scrim"></span>
+          <span class="home-feature-caption"><small><i></i> FEATURED BUILD</small><strong id="home-feature-title">Explore unit builds</strong><span id="home-feature-category">COMMUNITY GUIDE</span></span>
+          <span class="home-feature-arrow" aria-hidden="true">↗</span>
+        </button>
+        <input id="file-input" type="file" accept=".json,.csv,.md,.markdown,.txt,application/json,text/csv,text/markdown,text/plain" hidden>
+      </section>
+      <section class="home-destinations" aria-labelledby="home-destinations-title">
+        <div class="home-destinations-heading"><div><p class="eyebrow">CHOOSE YOUR COURSE</p><h2 id="home-destinations-title">Explore the guidebook</h2></div><span>QUICK ACCESS</span></div>
+        <div class="home-destination-grid" id="home-destination-grid"></div>
+      </section>
+      <section class="home-dashboard" aria-label="Guidebook dashboard">
+        <div class="home-dashboard-heading"><div><p class="eyebrow">YOUR LOGBOOK</p><h2>Recently added</h2></div><button class="text-link" type="button" data-page="unit-builds">All guides <span aria-hidden="true">→</span></button></div>
+        <div class="dashboard-columns">
+          <div class="home-recent-list" id="home-recent-guides" aria-label="Recently added guides"></div>
+          <aside class="home-quick-panel"><p class="eyebrow">QUICK DESTINATIONS</p><div class="home-quick-links"><button type="button" data-page="unit-builds"><span>⚔</span><span><strong>Unit Builds</strong><small>Browse character recommendations</small></span><b>→</b></button><button type="button" data-page="heroine"><span>✿</span><span><strong>Heroine</strong><small>Browse heroine builds</small></span><b>→</b></button><button type="button" data-page="artifacts"><span>◈</span><span><strong>Artifacts</strong><small>Artifact picks from the guides</small></span><b>→</b></button><button type="button" data-page="guides"><span>▤</span><span><strong>Guides</strong><small>Ascension and saved guides</small></span><b>→</b></button><button type="button" data-page="sea-soul"><span>♆</span><span><strong>Sea Souls</strong><small>Your saved Sea Soul collection</small></span><b>→</b></button><button type="button" data-page="tier-list"><span>▤</span><span><strong>Tier List</strong><small>Rank DPS, tanks, and support</small></span><b>→</b></button><button type="button" data-page="wish-calendar"><span>◷</span><span><strong>Wish Calendar</strong><small>Banner rotation schedule</small></span><b>→</b></button><button type="button" data-page="events"><span>🗓</span><span><strong>Events</strong><small>Sanctuary, Adventures, Voyage timers</small></span><b>→</b></button><button type="button" data-page="downloads"><span>⇩</span><span><strong>Downloads</strong><small>App links and guide files</small></span><b>→</b></button></div></aside>
+        </div>
+      </section>
+      </section>
+
+      <section class="page-view library" data-view="unit-builds" id="library" hidden>
+        <div class="section-heading">
+          <div><p class="eyebrow">CREW ARCHIVE</p><h2 id="unit-builds-title">UR units</h2><p class="roster-manager-note">UR and Regular Units have separate lists and page controls.</p></div>
+          <div class="roster-tools"><button id="favorites-toggle" class="nav-favorites" type="button" aria-pressed="false" aria-label="Show favorites">☆ <span>Favorites</span><b id="favorite-count">0</b></button><label class="sort-control"><span>SORT BY</span><select id="sort-select" aria-label="Sort guides"><option value="name">Name · A–Z</option><option value="channel">Channel · A–Z</option><option value="newest">Newest first</option><option value="recent">Recently updated</option><option value="favorites">Favorites first</option></select></label></div>
+        </div>
+
+        <div class="filter-panel">
+          <div class="search-wrap"><label class="search-box"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search characters, builds, sections…" autocomplete="off" aria-label="Search all guides" aria-controls="search-suggestions" aria-expanded="false"><button id="search-clear" class="search-clear" type="button" aria-label="Clear search" hidden>×</button><kbd>Ctrl K</kbd></label><div id="search-suggestions" class="search-suggestions" role="listbox" aria-label="Matching guides" hidden></div></div>
+          <label class="filter-select"><span>TAG</span><div class="ios-select-control"><select id="tag-select" aria-hidden="true" tabindex="-1"><option value="">All tags</option></select><button id="tag-select-button" class="ios-select-button" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Filter by tag"><span id="tag-select-label">All tags</span><b aria-hidden="true">⌄</b></button><div id="tag-select-menu" class="ios-select-menu" role="listbox" aria-label="Guide tags" hidden></div></div></label>
+          <label class="import-destination admin-only"><span>IMPORT TO</span><select id="import-channel-select" aria-label="Choose Discord channel for imported guides"><option value="">Detect</option><option value="regular-units">regular-units</option><option value="ur-list">ur-list</option><option value="ur-skills">ur-skills</option></select></label>
+          <button id="clear-filters" class="clear-filters" type="button">Clear filters</button>
+        </div>
+        <nav class="category-list" id="category-list" aria-label="Quick filter by guide channel"></nav>
+        <div class="guide-grid" id="guide-grid" aria-live="polite"></div>
+        <div class="empty-state" id="empty-state">
+          <div class="empty-icon" aria-hidden="true">⌑</div>
+          <h3 id="empty-title">Your guide deck is ready</h3>
+          <p id="empty-copy">Your guide library is empty. Guides will appear here when they’re available.</p>
+          <button id="restore-built-in-guides" class="button button-primary" type="button" hidden>Restore built-in builds</button>
+          <button id="empty-import-button" class="admin-only" aria-hidden="true" tabindex="-1">Choose guide files</button>
+          <button id="empty-favorites-button" class="button button-outline" hidden>Back to all guides</button>
+        </div>
+      </section>
+      <section class="page-view guides-view" data-view="guides" id="guides-view" hidden>
+        <div class="guides-heading"><div><p class="eyebrow">YOUR GUIDE DECK</p><h1>Guides</h1><p>Standalone guides saved separately from Unit Builds.</p></div><button class="button button-primary" id="custom-guide-add" type="button">＋ Add guide</button></div>
+        <section class="ascension-guide-group ascension-guide-selector" aria-labelledby="ascension-guides-title"><div class="ascension-selector-heading"><div><p class="eyebrow">UNIT PROGRESSION</p><h2 id="ascension-guides-title">Ascension</h2><p>Choose a unit type to view its ascension chart.</p></div><div class="ascension-segmented" role="group" aria-label="Choose an ascension chart"><button type="button" data-ascension-choice="builtin-ascension-ur-robin" aria-pressed="true">UR · Robin</button><button type="button" data-ascension-choice="builtin-ascension-normal-sengoku" aria-pressed="false">Normal · Sengoku</button></div></div><div id="ascension-guide-groups" class="ascension-guide-groups"></div></section>
+        <section class="ascension-guide-group spending-guide-selector" aria-labelledby="spending-guides-title"><div class="ascension-selector-heading"><div><p class="eyebrow">PROGRESSION STRATEGY</p><h2 id="spending-guides-title">F2P & P2W Guides</h2><p>Choose the play style you want recommendations for.</p></div><div class="ascension-segmented" role="group" aria-label="Choose a spending strategy"><button type="button" data-spending-choice="f2p" aria-pressed="true">Free-to-Play</button><button type="button" data-spending-choice="p2w" aria-pressed="false">P2W</button></div></div><div id="spending-guide-card" class="ascension-guide-groups"></div></section>
+        <div class="custom-guides-grid" id="custom-guides-list" aria-live="polite"></div>
+        <p class="collection-empty" id="custom-guides-empty" hidden>No guides added yet. Add a guide to start your collection.</p>
+      </section>
+      <section class="page-view guides-view sea-soul-view" data-view="sea-soul" id="sea-soul-view" hidden><div class="sea-soul-heading"><div><p class="eyebrow">STANDALONE COLLECTION</p><h1>Sea Soul</h1></div><button class="tier-add-button" id="sea-soul-add" type="button" aria-label="Add Sea Soul" title="Add Sea Soul">＋</button></div><div class="sea-soul-grid" id="sea-soul-content"></div><p class="sea-soul-empty" id="sea-soul-empty">Add a Sea Soul to start your collection.</p></section>
+      <section class="page-view library collection-view" data-view="heroine" id="heroine-view" hidden><div class="collection-heading"><h1>Heroine</h1><button class="tier-add-button" id="heroine-add" type="button" aria-label="Add a heroine unit" title="Add a heroine unit">＋</button></div><div class="guide-grid collection-grid" id="heroine-grid"></div><p class="collection-empty" id="heroine-empty">No heroine units added yet. Use + to add one.</p></section>
+      <section class="page-view library collection-view" data-view="artifacts" hidden><div class="collection-heading"><div><p class="eyebrow">ARTIFACT ARCHIVE</p><h1>Artifacts</h1></div><button class="tier-add-button" id="artifact-add" type="button" aria-label="Add an artifact" title="Add an artifact">＋</button></div><div class="artifact-list" id="artifact-list"></div><p class="collection-empty" id="artifact-empty">No artifacts added yet. Use + to add one.</p></section>
+      <section class="page-view tier-list-view" data-view="tier-list" hidden>
+        <div class="tier-list-heading"><div><p class="eyebrow">CREW RANKINGS</p><h1>Tier Lists</h1><p>Rank the units that stand above the rest.</p></div><span class="tier-list-emblem" aria-hidden="true">📊</span></div>
+        <section class="top-tiers-section" aria-labelledby="top-tiers-title">
+          <div class="top-tiers-heading"><div><span class="tier-section-kicker">CREW RANKINGS</span><h2 id="top-tiers-title">Tier Board</h2><p class="tier-board-subtitle">Place each unit once in a role and rank row.</p></div></div>
+          <div class="tier-rankings" id="tier-rankings"></div>
+        </section>
+        <section class="top-tiers-section regular-unit-tier-reference" aria-labelledby="regular-unit-tier-title">
+          <div class="top-tiers-heading"><div><span class="tier-section-kicker">REGULAR UNIT RANKINGS</span><h2 id="regular-unit-tier-title">Regular Unit Tier List</h2><p class="tier-board-subtitle">Reference ranking: SP Food, Worth Building, Good, Meh, and Food.</p></div></div>
+          <figure class="regular-unit-tier-figure"><img src="./assets/regular-unit-tier-list/regular-unit-rankings.webp" alt="Regular unit tier list with SP Food, Worth Building, Good, Meh, and Food rows" loading="lazy" decoding="async"><figcaption>Community regular-unit rankings reference.</figcaption></figure>
+        </section>
+        <section class="top-tiers-section regular-unit-tier-reference" aria-labelledby="heroine-tier-title">
+          <div class="top-tiers-heading"><div><span class="tier-section-kicker">HEROINE RANKINGS</span><h2 id="heroine-tier-title">Heroine Tier List</h2><p class="tier-board-subtitle">Reference rankings from Top Tiers through Food.</p></div></div>
+          <figure class="regular-unit-tier-figure"><img src="./assets/heroine-guides/heroine-tier-list.webp" alt="Heroine tier list with Top Tiers, SSS, SS, S, and Food rows" loading="lazy" decoding="async"><figcaption>Community heroine rankings reference.</figcaption></figure>
+        </section>
+        <section class="top-tiers-section regular-unit-tier-reference" aria-labelledby="sea-soul-tier-title">
+          <div class="top-tiers-heading"><div><span class="tier-section-kicker">SEA SOUL TYPE RANKINGS</span><h2 id="sea-soul-tier-title">Sea Soul Tier List</h2><p class="tier-board-subtitle">One reference list split into DPS, Tank, and Support parts.</p></div></div>
+          <div class="sea-soul-tier-parts">
+            <figure class="regular-unit-tier-figure"><img src="./assets/sea-soul-guide/dps-type-rankings.webp" alt="Sea Soul DPS types ranked strong, mid, and weak" loading="lazy" decoding="async"><figcaption>DPS</figcaption></figure>
+            <figure class="regular-unit-tier-figure"><img src="./assets/sea-soul-guide/tank-type-rankings.webp" alt="Sea Soul Tank types ranked strong, mid, and weak" loading="lazy" decoding="async"><figcaption>Tank</figcaption></figure>
+            <figure class="regular-unit-tier-figure"><img src="./assets/sea-soul-guide/support-type-rankings.webp" alt="Sea Soul Support types ranked best, mid, and bad" loading="lazy" decoding="async"><figcaption>Support</figcaption></figure>
+          </div>
+        </section>
+        <button class="button button-outline tier-list-browse" type="button" data-page="unit-builds">Browse Unit Builds →</button>
+      </section>
+      <section class="page-view library downloads-view" data-view="downloads" hidden><div class="collection-heading"><div><h1>Downloads</h1><p class="downloads-intro">Official app links for iOS and Android.</p></div><button class="tier-add-button" id="download-guide-add" type="button" aria-label="Edit iOS and Android download links" title="Edit download links">✎</button></div><div class="download-grid" id="download-grid"></div><p class="collection-empty" id="downloads-empty">Add an iOS or Android link using the edit button.</p></section>
+      <section class="page-view wish-calendar-view" data-view="wish-calendar" hidden>
+        <div class="wish-calendar-heading"><div><p class="eyebrow">BANNER TRACKER</p><h1>Wish Calendar</h1><p>Keep upcoming wishes and banner windows in one place.</p></div><span class="wish-calendar-emblem" aria-hidden="true">◷</span></div>
+        <section class="wish-calendar-panel" aria-label="Wish calendar schedule"><div class="wish-calendar-toolbar"><span class="wish-calendar-month">CURRENT WISH ROTATION</span><span class="wish-calendar-status"><i></i> FROM THE COMMUNITY CALENDAR</span></div><div class="wish-current-event" id="wish-current-event" aria-live="polite"></div><div class="wish-calendar-source">Countdown follows the listed calendar date; no exact start time is shown. Schedule source: <a href="https://xcal.me/" target="_blank" rel="noopener noreferrer">Bounty Pirates Calendar ↗</a></div></section>
+        <section class="wish-banner-board" id="wish-banner-board" aria-labelledby="wish-banner-title" hidden><div class="wish-banner-heading"><div><span class="tier-section-kicker">WISH BANNER LINEUP</span><h2 id="wish-banner-title">Banner Units</h2><p id="wish-banner-date"></p></div><div class="tier-heading-actions"><span class="wish-live-badge" id="wish-banner-live" hidden>● LIVE TODAY</span><span class="tier-empty-badge" id="wish-banner-count">0 UNITS</span><button id="wish-banner-save" class="button button-outline lineup-save-button" type="button" hidden>Save lineup</button><button id="wish-banner-add" class="tier-add-button" type="button" aria-label="Add a unit to this wish banner" title="Add a banner unit">＋</button></div></div><div class="wish-banner-tabs" id="wish-banner-tabs" role="tablist" aria-label="Choose a wish banner"></div><p class="wish-banner-empty" id="wish-banner-empty">No units added yet. Use + to choose the units featured in this banner.</p><div class="top-tiers-grid wish-banner-grid" id="wish-banner-grid" hidden></div></section>
+      </section>
+      <section class="page-view wish-calendar-view" data-view="events" id="events-view" hidden><div class="wish-calendar-heading"><div><p class="eyebrow">GAME EVENT TRACKER</p><h1>Events</h1><p>Pick an activity, add its time from your in-game calendar, and keep a live countdown here.</p></div><span class="wish-calendar-emblem" aria-hidden="true">🗓️</span></div><section class="event-type-panel" aria-label="Add a game activity"><p class="eyebrow">ADD A TIMER</p><div class="event-type-shortcuts"><button type="button" data-add-event-type="Sanctuary"><span>🏝️</span>Sanctuary</button><button type="button" data-add-event-type="Adventures"><span>🧭</span>Adventures</button><button type="button" data-add-event-type="Voyage"><span>⛵</span>Voyage</button><button type="button" data-add-event-type="Custom"><span>＋</span>Other event</button></div></section><section class="personal-events" aria-labelledby="personal-events-title"><div class="personal-events-heading"><div><p class="eyebrow">YOUR CALENDAR</p><h2 id="personal-events-title">Event timers</h2></div><button class="button button-primary" id="event-add" type="button">＋ Add event</button></div><div id="personal-events-list" class="personal-events-list" aria-live="polite"></div><p id="personal-events-empty" class="personal-events-empty" hidden>No event timers yet. Pick Sanctuary, Adventures, or Voyage to add your first one.</p></section></section>
+    </main>
+
+    <footer class="footer"><span>Built for your crew.</span><span id="offline-label">Offline-ready guidebook</span></footer>
+    </div>
+  </div>
+
+  <dialog id="guide-dialog" class="guide-dialog">
+    <form method="dialog"><button class="dialog-close" aria-label="Close guide">×</button></form>
+    <div class="dialog-content" id="dialog-content"></div>
+  </dialog>
+  <dialog id="tier-picker-dialog" class="tier-picker-dialog">
+    <div class="tier-picker-heading"><div><p class="eyebrow">UNIT BUILDS</p><h2 id="tier-picker-title">Add to Meta</h2></div><button id="tier-picker-close" class="dialog-close" type="button" aria-label="Close unit picker">×</button></div>
+    <p class="tier-picker-copy">Choose a build. Its photo will appear in this group, and you can open the card from there.</p>
+    <label class="tier-picker-search"><span aria-hidden="true">⌕</span><input id="tier-picker-search" type="search" placeholder="Search unit builds…" autocomplete="off" aria-label="Search unit builds"></label>
+    <div class="tier-picker-list" id="tier-picker-list"></div>
+  </dialog>
+  <dialog id="wish-picker-dialog" class="tier-picker-dialog">
+    <div class="tier-picker-heading"><div><p class="eyebrow">UNIT BUILDS</p><h2 id="wish-picker-title">Add banner units</h2></div><button id="wish-picker-close" class="dialog-close" type="button" aria-label="Close unit picker">×</button></div>
+    <p class="tier-picker-copy">Choose the unit builds featured in this wish banner.</p>
+    <div class="tier-picker-list" id="wish-picker-list"></div>
+  </dialog>
+  <dialog id="unit-marker-dialog" class="paste-dialog"><form id="unit-marker-form"><div class="paste-heading"><div><p class="eyebrow">UNIT TAGS</p><h2>Edit guide tags</h2></div><button type="button" class="dialog-close" data-close-dialog="unit-marker-dialog" aria-label="Close">×</button></div><input id="unit-marker-id" type="hidden"><label class="paste-field">TAGS <input id="guide-tags-edit" maxlength="180" placeholder="Comma-separated tags"></label><fieldset class="role-tag-options"><legend>ROLE</legend><label><input type="checkbox" value="DPS"> DPS</label><label><input type="checkbox" value="Tank"> Tank</label><label><input type="checkbox" value="Support"> Support</label></fieldset><div class="paste-actions"><button type="button" class="button button-outline" data-close-dialog="unit-marker-dialog">Cancel</button><button class="button button-primary" type="submit">Save tags</button></div></form></dialog>
+  <dialog id="profile-dialog" class="profile-dialog"><button type="button" class="dialog-close" data-close-dialog="profile-dialog" aria-label="Close profile">×</button><div class="profile-dialog-content"><p class="eyebrow">YOUR CAPTAIN PROFILE</p><div class="profile-dialog-avatar"><img id="profile-dialog-avatar" alt="" hidden><span id="profile-dialog-avatar-fallback" aria-hidden="true">✦</span></div><h2 id="profile-dialog-name">Set sail, captain</h2><p id="profile-dialog-tagline">Your guide deck, at a glance.</p><button type="button" class="button button-primary" data-open-settings>Edit profile</button><div class="profile-data-transfer"><strong>Use your website profile in the app</strong><p>Export this profile to a backup. New installs restore it automatically; existing installs can import it below.</p><div><button type="button" class="button button-outline" id="export-app-data">Export backup</button><button type="button" class="button button-outline" id="import-app-data">Import backup</button><input id="app-data-file" type="file" accept="application/json,.json" hidden></div></div></div></dialog>
+  <dialog id="site-settings-dialog" class="paste-dialog"><form id="site-settings-form"><div class="paste-heading"><div><p class="eyebrow">MAKE IT YOURS</p><h2>Profile settings</h2></div><button type="button" class="dialog-close" data-close-dialog="site-settings-dialog" aria-label="Close">×</button></div><label class="paste-field">PROFILE NAME <input id="setting-profile-name" maxlength="40"></label><label class="paste-field">PROFILE TAGLINE <input id="setting-profile-tagline" maxlength="90"></label><label class="paste-field">PROFILE PHOTO URL <input id="setting-avatar" type="url" placeholder="https://…"></label><div class="paste-actions"><button type="button" class="button button-outline" data-close-dialog="site-settings-dialog">Cancel</button><button type="submit" class="button button-primary">Save profile</button></div></form></dialog>
+  <dialog id="links-settings-dialog" class="paste-dialog"><form id="links-settings-form"><div class="paste-heading"><div><p class="eyebrow">COMMUNITY LINKS</p><h2>Discord links</h2></div><button type="button" class="dialog-close" data-close-dialog="links-settings-dialog" aria-label="Close">×</button></div><label class="paste-field">DISCORD SERVER INVITE <input id="setting-discord-invite" type="url" placeholder="https://discord.gg/…"></label><label class="paste-field">DISCORD CONTACT PROFILE <input id="setting-discord-profile" type="url" placeholder="https://discord.com/users/…"></label><div class="paste-actions"><button type="button" class="button button-outline" data-close-dialog="links-settings-dialog">Cancel</button><button type="submit" class="button button-primary">Save Discord links</button></div></form></dialog>
+  <dialog id="download-guide-dialog" class="paste-dialog"><form id="download-guide-form"><div class="paste-heading"><div><p class="eyebrow">APP DOWNLOAD LINKS</p><h2>Edit platform links</h2></div><button type="button" class="dialog-close" data-close-dialog="download-guide-dialog" aria-label="Close">×</button></div><label class="paste-field">IOS DOWNLOAD LINK <input id="download-link-ios" type="url" inputmode="url" placeholder="https://apps.apple.com/…"></label><label class="paste-field">ANDROID DOWNLOAD LINK <input id="download-link-android" type="url" inputmode="url" placeholder="https://play.google.com/store/apps/…"></label><p class="form-hint">Add at least one link. Links open in your browser or app store.</p><div class="paste-actions"><button type="button" class="button button-outline" data-close-dialog="download-guide-dialog">Cancel</button><button type="submit" class="button button-primary">Save links</button></div></form></dialog>
+  <dialog id="event-dialog" class="paste-dialog"><form id="event-form"><div class="paste-heading"><div><p class="eyebrow">GAME EVENT TIMER</p><h2>Add to your calendar</h2></div><button type="button" class="dialog-close" data-close-dialog="event-dialog" aria-label="Close">×</button></div><label class="paste-field">ACTIVITY <select id="event-type"><option value="Custom">Other event</option><option value="Sanctuary">Sanctuary</option><option value="Adventures">Adventures</option><option value="Voyage">Voyage</option></select></label><label class="paste-field">EVENT NAME <input id="event-name" maxlength="80" required placeholder="e.g. Sanctuary"></label><label class="paste-field">START DATE <input id="event-date" type="date" required></label><label class="paste-field">START TIME <input id="event-time" type="time" required></label><div class="event-end-fields"><label class="paste-field">END DATE (OPTIONAL) <input id="event-end-date" type="date"></label><label class="paste-field">END TIME (OPTIONAL) <input id="event-end-time" type="time"></label></div><label class="paste-field">REPEAT <select id="event-repeat"><option value="none">Does not repeat</option><option value="daily">Every day</option><option value="weekly">Every week</option></select><small class="field-help">Enter the dates and times shown in your game calendar. The next start countdown updates live.</small></label><label class="paste-field">NOTES <textarea id="event-notes" rows="3" maxlength="500" placeholder="Optional details"></textarea></label><div class="paste-actions"><button type="button" class="button button-outline" data-close-dialog="event-dialog">Cancel</button><button type="submit" class="button button-primary">Save timer</button></div></form></dialog>
+  <dialog id="collection-item-dialog" class="paste-dialog"><form id="collection-item-form"><div class="paste-heading"><div><p class="eyebrow" id="collection-item-kicker">COLLECTION</p><h2 id="collection-item-title">Add item</h2></div><button type="button" class="dialog-close" data-close-dialog="collection-item-dialog" aria-label="Close">×</button></div><input id="collection-item-kind" type="hidden"><input id="collection-item-edit-index" type="hidden"><datalist id="artifact-suggestions"></datalist><label class="paste-field">NAME <input id="collection-item-name" list="artifact-suggestions" maxlength="60" required></label><label class="paste-field">PHOTO URL <input id="collection-item-image" type="url" placeholder="https://…"><input id="collection-item-file" type="file" accept="image/*" aria-label="Choose a photo from this device"></label><label class="paste-field" id="collection-item-description-label">DESCRIPTION <textarea id="collection-item-description" rows="4" maxlength="500" placeholder="What should people know about it?"></textarea></label><div id="heroine-fields" class="artifact-fields" hidden><label class="paste-field">STAR RATING <select id="heroine-stars" aria-label="Heroine star rating"><option value="1">1 star</option><option value="2">2 stars</option><option value="3" selected>3 stars</option><option value="4">4 stars</option><option value="5">5 stars</option></select></label><label class="paste-field">PASSIVES <textarea id="heroine-passives" rows="3" maxlength="1000" placeholder="Describe passive abilities or effects."></textarea></label></div><div id="artifact-fields" class="artifact-fields" hidden><label class="paste-field">FROM / SOURCE <textarea id="artifact-source" rows="2" maxlength="500" placeholder="Where to obtain this artifact"></textarea></label><label class="paste-field">BASIC STATS <textarea id="artifact-basic" rows="2" maxlength="500" placeholder="HP 252133&#10;ATK 14406"></textarea></label><label class="paste-field">TUNING <textarea id="artifact-tuning" rows="2" maxlength="500" placeholder="HP 122500&#10;ATK 7000&#10;HP 6%"></textarea></label><label class="paste-field">REFINING <textarea id="artifact-refining" rows="2" maxlength="500" placeholder="ArtifactsHP 50%&#10;ArtifactsATK 50%"></textarea></label><label class="paste-field">SKILLS <textarea id="artifact-skills" rows="4" maxlength="2000" placeholder="Describe artifact skills and effects"></textarea></label></div><div class="paste-actions"><button type="button" class="button button-outline" data-close-dialog="collection-item-dialog">Cancel</button><button id="collection-item-submit" type="submit" class="button button-primary">Add to collection</button></div></form></dialog>
+  <dialog id="artifact-detail-dialog" class="artifact-detail-dialog"><button type="button" class="dialog-close" data-close-dialog="artifact-detail-dialog" aria-label="Close artifact details">×</button><div id="artifact-detail-content"></div></dialog>
+  <dialog id="custom-guide-dialog" class="paste-dialog"><form id="custom-guide-form"><div class="paste-heading"><div><p class="eyebrow">YOUR GUIDE DECK</p><h2>Add a guide</h2></div><button type="button" class="dialog-close" data-close-dialog="custom-guide-dialog" aria-label="Close">×</button></div><label class="paste-field">GUIDE NAME <input id="custom-guide-title" maxlength="80" required placeholder="Guide title"></label><label class="paste-field">SHORT DESCRIPTION <input id="custom-guide-summary" maxlength="220" placeholder="What is this guide about?"></label><label class="paste-field">GUIDE CONTENT <textarea id="custom-guide-content" rows="10" maxlength="12000" required placeholder="Write your guide here. Markdown is supported."></textarea></label><div class="paste-actions"><button type="button" class="button button-outline" data-close-dialog="custom-guide-dialog">Cancel</button><button type="submit" class="button button-primary">Save guide</button></div></form></dialog>
+  <dialog id="sea-soul-edit-dialog" class="paste-dialog"><form id="sea-soul-edit-form"><div class="paste-heading"><div><p class="eyebrow">SEA SOUL COLLECTION</p><h2 id="sea-soul-edit-title">Add Sea Soul</h2></div><button type="button" class="dialog-close" data-close-dialog="sea-soul-edit-dialog" aria-label="Close">×</button></div><input id="sea-soul-edit-id" type="hidden"><label class="paste-field">SOUL NAME <input id="sea-soul-edit-name" maxlength="60" required placeholder="e.g. Aries I"></label><label class="paste-field">ICON IMAGE URL <input id="sea-soul-edit-image" type="url" placeholder="https://…"><input id="sea-soul-edit-image-file" type="file" accept="image/*" aria-label="Choose a Sea Soul icon from this device"><small class="field-help">Paste an image link or choose a file from this device.</small></label><label class="paste-field">SKILL PHOTO URL <input id="sea-soul-edit-skill-image" type="url" placeholder="https://…"><input id="sea-soul-edit-skill-image-file" type="file" accept="image/*" aria-label="Choose a skill photo from this device"><small class="field-help">Optional round skill photo; paste a link or choose a file.</small></label><label class="paste-field">SKILL DESCRIPTION <textarea id="sea-soul-edit-skill-description" rows="3" maxlength="800" placeholder="Describe what this skill does."></textarea></label><label class="paste-field">ATTRIBUTES <textarea id="sea-soul-edit-attributes" rows="3" maxlength="600" placeholder="ATK: 2500&#10;HP: 12000"></textarea><small class="field-help">One attribute per line. Format: Name: value.</small></label><label class="paste-field">SET BONUSES <textarea id="sea-soul-edit-bonuses" rows="4" maxlength="1200" placeholder="CRIT rate +2.5% | Legend 2 part(s) to activate&#10;CRIT rate +3.5% | Legend 4 part(s) to activate"></textarea><small class="field-help">One bonus per line. Use | to separate the bonus from its activation requirement.</small></label><div class="paste-actions"><button type="button" class="button button-outline" data-close-dialog="sea-soul-edit-dialog">Cancel</button><button type="submit" class="button button-primary">Save Sea Soul</button></div></form></dialog>
+  <dialog id="paste-dialog" class="paste-dialog">
+    <form id="paste-form">
+      <div class="paste-heading"><div><p class="eyebrow">YOUR GUIDE LIBRARY</p><h2 id="editor-title">Paste a Discord guide</h2></div><button type="button" id="paste-close" class="dialog-close" aria-label="Close">×</button></div>
+      <label class="paste-field">GUIDE TITLE <input id="paste-title" type="text" maxlength="100" required placeholder="Enter the unit or build name"></label>
+      <label class="paste-field">CHANNEL <select id="paste-category"><option value="regular-units">regular-units</option><option value="ur-list">ur-list</option><option value="ur-skills">ur-skills</option></select></label>
+      <label class="paste-field">SUMMARY <input id="paste-summary" type="text" maxlength="220" placeholder="Short preview shown on the guide card"></label>
+      <label class="paste-field">TAGS <input id="paste-tags" type="text" placeholder="Comma-separated, e.g. beginner, farming"></label>
+      <label class="paste-field">EMBED STRIPE COLOR <input id="paste-accent-color" type="color" value="#e8df2b"></label>
+      <label class="paste-field">UNIT THUMBNAIL <select id="paste-thumbnail-position"><option value="right">Top right, beside title</option><option value="under-title">Below title</option></select><input id="paste-image-top" type="url" placeholder="Paste a direct image URL (optional)"><input id="paste-image-top-file" type="file" accept="image/*" aria-label="Choose unit thumbnail"></label>
+      <label class="paste-field">GUIDE SECTIONS <textarea id="paste-fields" rows="8" placeholder="⚔️ HAKIS | Primary: Combo, Speed, Double Crit&#10;Secondary: Adv Crit Res, DMG Reflect&#10;📿 RELICS | Team Sun Hero [Crit Rate]&#10;Mystic Leader [Crit DMG]"></textarea><small class="field-help">Start each section with Name | details. Put more details on the next lines. Add emoji to the section name if you want.</small></label>
+      <fieldset class="paste-field guide-skill-photo-field"><legend>SP SKILL PHOTOS · 4 CIRCLES</legend><p class="field-help">Choose up to four skill icons, then arrange them in the right order.</p><div id="guide-skill-photo-slots" class="guide-skill-photo-slots"></div></fieldset>
+      <fieldset class="paste-field guide-photo-field"><legend>SEA SOUL PHOTOS</legend><p class="field-help">Choose Sea Souls from your collection. Drag the selected photos to arrange them.</p><div id="guide-sea-soul-choices" class="guide-photo-choices"></div><div id="guide-sea-soul-order" class="guide-photo-order" aria-label="Selected Sea Soul photos in display order"></div></fieldset>
+      <fieldset class="paste-field guide-photo-field"><legend>ARTIFACT PHOTOS</legend><p class="field-help">Choose multiple artifacts from your collection, then drag them to arrange their display order.</p><div id="guide-artifact-choices" class="guide-photo-choices"></div><div id="guide-artifact-order" class="guide-photo-order" aria-label="Selected artifact photos in display order"></div></fieldset>
+      <label class="paste-field">LARGE IMAGE OR GIF <select id="paste-main-image-position"><option value="bottom">At the bottom</option><option value="before-sections">Before guide sections</option><option value="after-description">After description</option></select><input id="paste-image-bottom" type="url" placeholder="Paste a direct image URL (optional)"><input id="paste-image-bottom-file" type="file" accept="image/*" aria-label="Choose large image or GIF"></label>
+      <div class="paste-actions"><button type="button" id="paste-cancel" class="button button-outline">Cancel</button><button id="paste-submit" type="submit" class="button button-primary">Add guide</button></div>
+    </form>
+  </dialog>
+  <dialog id="discord-connect-dialog" class="paste-dialog">
+    <form id="discord-connect-form">
+      <div class="paste-heading"><div><p class="eyebrow">LOCAL CONNECTION</p><h2>Connect your Discord bot</h2></div><button type="button" id="discord-connect-close" class="dialog-close" aria-label="Close">×</button></div>
+      <p class="discord-connect-note">Your bot token is sent only to the sync service running on this PC. It stays in memory until you stop that service and is never saved in the app.</p>
+      <label class="paste-field">BOT TOKEN <input id="discord-bot-token" type="password" autocomplete="new-password" spellcheck="false" required placeholder="Paste the reset token from Developer Portal"></label>
+      <label class="paste-field">DISCORD SERVER ID <input id="discord-server-id" type="text" inputmode="numeric" autocomplete="off" pattern="[0-9]{15,25}" required placeholder="Right-click your server → Copy Server ID"></label>
+      <p id="discord-connect-status" class="discord-connect-status" role="status" aria-live="polite"></p>
+      <div class="paste-actions"><button type="button" id="discord-connect-cancel" class="button button-outline">Cancel</button><button id="discord-connect-submit" type="submit" class="button button-primary">Connect bot</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js?v=20261022-weevil-ur-v71" defer></script>
+  <script src="motion.bundle.js?v=20261021-performance-v1" defer></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

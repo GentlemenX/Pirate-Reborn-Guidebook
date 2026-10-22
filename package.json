@@ -1,0 +1,31 @@
+{
+  "name": "pirate-reborn-guidebook",
+  "version": "1.4.0",
+  "description": "An offline-capable One Piece Pirate Reborn guidebook packaged for Android.",
+  "main": "app.js",
+  "scripts": {
+    "discord:sync": "node discord-sync-server.mjs",
+    "motion:build": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-motion.ps1",
+    "copy:web": "npm run motion:build && powershell -NoProfile -ExecutionPolicy Bypass -File scripts/copy-web.ps1",
+    "android:add": "npm run copy:web && cap add android",
+    "android:sync": "npm run copy:web && powershell -NoProfile -ExecutionPolicy Bypass -File scripts/stage-app-profile-backup.ps1 && cap sync android",
+    "android:apk": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-apk.ps1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/cli": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.27",
+    "motion": "^14.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "vite": "^8.3.4"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Pirate Reborn Guidebook",
+  "short_name": "Pirate Guidebook",
+  "description": "An offline guide library for One Piece Pirate Reborn.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#10151d",
+  "theme_color": "#10151d",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
