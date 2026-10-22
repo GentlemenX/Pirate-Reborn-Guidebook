@@ -2087,7 +2087,7 @@ html:not([data-theme="light"]) .sea-soul-card-edit{border-color:#465d68;border-r
 
   #wish-banner-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,86px),1fr))!important;gap:7px;padding:8px}
   #wish-banner-grid .wish-unit-card{display:grid;grid-template-columns:minmax(0,1fr) 30px;grid-template-rows:minmax(0,1fr) 26px;min-width:0;height:auto;aspect-ratio:1/1.16;overflow:hidden}
-  #wish-banner-grid .wish-unit-open{grid-column:1/3;grid-row:1;min-height:0;height:100%;touch-action:manipulation}
+    #wish-banner-grid .tier-unit-open{grid-column:1/3;grid-row:1;min-height:0;height:100%;touch-action:manipulation}
   #wish-banner-grid .wish-unit-card .tier-unit-art{height:100%;aspect-ratio:auto}
   #wish-banner-grid .wish-unit-card .tier-unit-open{display:block;width:100%;min-width:0;padding:0}
   #wish-banner-grid .wish-unit-card .tier-unit-art{display:block;width:100%;min-width:0;max-width:none}
