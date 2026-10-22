@@ -33,6 +33,19 @@ jobs:
         run: npm ci
       - name: Build web app
         run: npm run copy:web
+      - name: Package verified Android live update
+        shell: pwsh
+        run: |
+          $zipPath = Join-Path $env:RUNNER_TEMP 'guidebook-update.zip'
+          Compress-Archive -Path 'www\*' -DestinationPath $zipPath -CompressionLevel Optimal
+          $hash = (Get-FileHash -LiteralPath $zipPath -Algorithm SHA256).Hash.ToLowerInvariant()
+          Copy-Item -LiteralPath $zipPath -Destination 'www\mobile-update.zip' -Force
+          $manifest = [ordered]@{
+            version = $env:GITHUB_SHA
+            sha256 = $hash
+            bundleUrl = 'https://gentlemenx.github.io/Pirate-Reborn-Guidebook/mobile-update.zip'
+          } | ConvertTo-Json -Compress
+          [System.IO.File]::WriteAllText((Join-Path (Get-Location) 'www\mobile-update.json'), $manifest, [System.Text.UTF8Encoding]::new($false))
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

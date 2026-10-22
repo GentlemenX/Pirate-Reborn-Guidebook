@@ -4025,6 +4025,15 @@ async function initializeGuidebook() {
   loadSaved(); loadTopTierIds(); loadWishBannerUnits(); loadCustomData(); render();
   const initialPage = location.hash.slice(1);
   setPage(initialPage === 'library' ? 'unit-builds' : (PAGE_TITLES[initialPage] ? initialPage : 'home'), false);
+  if (typeof window.Capacitor?.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) {
+    window.setTimeout(() => {
+      try {
+        window.Capacitor?.toNative?.('GuidebookUpdater', 'checkForUpdate', {}, null);
+      } catch (_) {
+        // The bundled copy remains available if the native updater cannot run.
+      }
+    }, 1200);
+  }
   const startupScreen = $('#startup-screen');
   if (startupScreen) {
     let startupDismissed = false;
