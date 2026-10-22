@@ -2013,6 +2013,12 @@ html.performance-lite .guide-card,html.performance-lite .roster-card,html.perfor
   .sea-soul-skill p{color:#354c4c;font-size:clamp(10px,2.7vw,12px);line-height:1.45}
   .sea-soul-card-edit{justify-self:end;margin:0 9px 8px;padding:6px 11px;border-radius:8px;background:#f8faf7;color:#36504e;font-size:11px}
 }
+/* Keep wish units comfortably tappable on phones instead of squeezing seven into each row. */
+@media(max-width:600px){
+  .wish-banner-grid{grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:7px;padding:8px}
+  .wish-banner-grid .wish-unit-card{min-width:0}
+  .wish-banner-grid .wish-unit-open{min-height:44px;touch-action:manipulation}
+}
 @media(max-width:390px){.heroine-style-card{max-width:108px}.guide-dialog .embed-main-image{max-height:42dvh}.wish-banner-grid{gap:3px;padding:4px}}
 @media(prefers-reduced-motion:reduce){.wish-banner-grid .wish-unit-card,.sea-soul-card{animation:none!important;transition:none!important}}
 
