@@ -4051,6 +4051,35 @@ async function initializeGuidebook() {
     window.setTimeout(dismissStartup, 2500);
   }
 }
+const spotlightCardSelector = '.guide-card, .tier-unit-card, .sea-soul-card, .activity-calendar-card, .personal-event-card, .artifact-card, .download-card, .contact-card, .collection-item-card, .custom-guide-card, .download-platform-card, .wish-current-card, .wish-banner-board';
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  let pendingSpotlightPoint = null;
+  let spotlightFrame = 0;
+  document.addEventListener('pointermove', event => {
+    if (event.pointerType && event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
+    pendingSpotlightPoint = { x: event.clientX, y: event.clientY, target: event.target };
+    if (spotlightFrame) return;
+    spotlightFrame = window.requestAnimationFrame(() => {
+      spotlightFrame = 0;
+      const point = pendingSpotlightPoint;
+      pendingSpotlightPoint = null;
+      const target = point?.target instanceof Element ? point.target : point?.target?.parentElement;
+      const card = target?.closest(spotlightCardSelector);
+      if (!card || !document.elementFromPoint(point.x, point.y)?.closest(spotlightCardSelector)) return;
+      const bounds = card.getBoundingClientRect();
+      if (!bounds.width || !bounds.height) return;
+      card.style.setProperty('--spotlight-x', `${((point.x - bounds.left) / bounds.width) * 100}%`);
+      card.style.setProperty('--spotlight-y', `${((point.y - bounds.top) / bounds.height) * 100}%`);
+      card.classList.add('cursor-spotlight-card');
+    });
+  }, { passive: true });
+  document.addEventListener('pointerout', event => {
+    const target = event.target instanceof Element ? event.target : event.target?.parentElement;
+    const card = target?.closest('.cursor-spotlight-card');
+    const related = event.relatedTarget instanceof Element ? event.relatedTarget.closest(spotlightCardSelector) : null;
+    if (card && card !== related) card.classList.remove('cursor-spotlight-card');
+  }, { passive: true });
+}
 initializeGuidebook();
 window.setInterval(() => {
   if (activePage !== 'home') return;

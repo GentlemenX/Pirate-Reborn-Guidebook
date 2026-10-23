@@ -2013,6 +2013,7 @@ html.performance-lite .guide-card,html.performance-lite .roster-card,html.perfor
   .sea-soul-skill p{color:#354c4c;font-size:clamp(10px,2.7vw,12px);line-height:1.45}
   .sea-soul-card-edit{justify-self:end;margin:0 9px 8px;padding:6px 11px;border-radius:8px;background:#f8faf7;color:#36504e;font-size:11px}
 }
+
 /* Keep wish units comfortably tappable on phones instead of squeezing seven into each row. */
 @media(max-width:600px){
   .wish-banner-grid{grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:7px;padding:8px}
@@ -2096,4 +2097,54 @@ html:not([data-theme="light"]) .sea-soul-card-edit{border-color:#465d68;border-r
   #wish-banner-grid .wish-unit-card .tier-unit-remove{position:static;grid-column:2;grid-row:2;align-self:center;justify-self:center;width:28px;height:28px;min-width:28px;min-height:28px;font-size:18px;box-shadow:none}
   #wish-banner-grid .wish-unit-badge{width:16px;height:16px;font-size:7px}
   #wish-banner-grid .wish-role-badge{display:none}
+}
+
+/* Desktop hover feedback stays decorative and never gates access to content. */
+@media (hover: hover) {
+  button:not(:disabled), [role="row"], .sea-soul-bonus-row, .guide-photo-order-item {
+    transition: background-color 150ms ease-out, box-shadow 150ms ease-out, border-color 150ms ease-out, color 150ms ease-out;
+  }
+  :root button:not(:disabled):hover, :root [role="row"]:hover, :root .sea-soul-bonus-row:hover, :root .guide-photo-order-item:hover {
+    box-shadow: inset 0 0 0 999px rgba(255, 222, 158, .09);
+  }
+
+  :root :is(.guide-card, .tier-unit-card, .sea-soul-card, .activity-calendar-card, .personal-event-card, .artifact-card, .download-card, .contact-card, .collection-item-card, .custom-guide-card, .download-platform-card, .wish-current-card, .wish-banner-board, .heroine-style-card, .home-destination-card, .artifact-entry, .collection-unit-card, .wish-unit-card) {
+    transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+  }
+  :root :is(.guide-card, .tier-unit-card, .sea-soul-card, .activity-calendar-card, .personal-event-card, .artifact-card, .download-card, .contact-card, .collection-item-card, .custom-guide-card, .download-platform-card, .wish-current-card, .wish-banner-board, .heroine-style-card, .home-destination-card, .artifact-entry, .collection-unit-card, .wish-unit-card):hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, .28), 0 5px 14px rgba(0, 0, 0, .12);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :is(.guide-card, .tier-unit-card, .sea-soul-card, .activity-calendar-card, .personal-event-card, .artifact-card, .download-card, .contact-card, .collection-item-card, .custom-guide-card, .download-platform-card, .wish-current-card, .wish-banner-board, .heroine-style-card, .home-destination-card, .artifact-entry, .collection-unit-card, .wish-unit-card),
+    button:not(:disabled), [role="row"], .sea-soul-bonus-row, .guide-photo-order-item {
+      transition-duration: .01ms;
+    }
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html:not([data-theme="light"]) .cursor-spotlight-card {
+    position: relative;
+  }
+  html:not([data-theme="light"]) .cursor-spotlight-card::before {
+    position: absolute;
+    z-index: 5;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: radial-gradient(circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), rgba(255, 222, 158, .95) 0, rgba(125, 201, 230, .28) 25%, transparent 62%);
+    content: "";
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 150ms ease-out;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+  html:not([data-theme="light"]) .cursor-spotlight-card:hover::before {
+    opacity: 1;
+  }
 }
