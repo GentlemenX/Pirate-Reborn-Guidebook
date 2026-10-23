@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <script src="startup.js"></script>
-  <link rel="stylesheet" href="styles.css?v=20261022-dialog-scroll-v72">
+  <link rel="stylesheet" href="styles.css?v=20261023-text-scramble-v1">
   <link rel="stylesheet" href="motion.bundle.css?v=20261021-performance-v1">
   <title>Pirate Reborn Guidebook</title>
 </head>
@@ -20,7 +20,7 @@
       <p class="startup-kicker">PIRATE REBORN</p>
       <h1>Guidebook</h1>
       <p class="startup-message">Loading your guidebook…</p>
-      <div class="startup-progress" role="progressbar" aria-label="Loading guidebook"><span></span></div>
+      <span class="startup-spinner" aria-hidden="true"></span>
       <small>CHARTING YOUR COURSE</small>
     </div>
   </div>
@@ -30,7 +30,7 @@
         <span class="brand-mark"><img src="./assets/pirate-reborn-app-icon-original.png" alt=""></span>
         <span><strong>OPPR</strong><small>PIRATE REBORN</small></span>
       </a>
-      <nav class="sidebar-nav" aria-label="Main navigation">
+      <nav class="sidebar-nav" aria-label="Sidebar destinations">
         <button class="sidebar-link" type="button" data-page="home" aria-current="page"><span class="sidebar-icon">⌂</span>Home</button>
         <button class="sidebar-link" type="button" data-page="unit-builds"><span class="sidebar-icon">⚔</span>Unit Builds<span class="sidebar-count" id="sidebar-guide-count">0</span></button>
         <button class="sidebar-link" type="button" data-page="guides"><span class="sidebar-icon">▤</span>Guides</button>
@@ -41,35 +41,60 @@
         <button class="sidebar-link" type="button" data-page="wish-calendar"><span class="sidebar-icon">◷</span>Wish Calendar</button>
         <button class="sidebar-link" type="button" data-page="events"><span class="sidebar-icon">🗓</span>Events</button>
         <button class="sidebar-link" type="button" data-page="downloads"><span class="sidebar-icon">⇩</span>Downloads</button>
+        <button class="sidebar-link" type="button" data-page="inbox"><span class="sidebar-icon">✉</span>Inbox<span class="sidebar-count" id="sidebar-inbox-count" hidden>0</span></button>
+        <button class="sidebar-link product-tour-launcher" type="button" data-start-product-tour><span class="sidebar-icon" aria-hidden="true">ⓘ</span>Take a tour</button>
       </nav>
       <button class="sidebar-bottom" id="profile-customize" type="button" aria-label="Open your profile"><span class="sidebar-crew-avatar"><img id="sidebar-crew-avatar" alt="" hidden><span id="sidebar-crew-fallback" aria-hidden="true">✦</span></span><span class="sidebar-profile-copy"><strong id="sidebar-profile-name">Set sail, captain</strong><small id="sidebar-profile-tagline">Your guide deck, at a glance.</small></span><span class="sidebar-profile-edit" aria-hidden="true">⚙</span></button>
     </aside>
     <button class="sidebar-backdrop" id="sidebar-backdrop" type="button" aria-label="Close navigation" hidden></button>
     <div class="app-main">
     <header class="topbar">
-      <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
-      <a class="topbar-home-logo" href="#home" aria-label="Pirate Reborn Guidebook home"><img src="./assets/pirate-reborn-app-icon-original.png" alt=""></a>
-      <div class="topbar-title"><span class="topbar-kicker">PIRATE REBORN</span><strong id="page-title">Home</strong></div>
-      <nav class="top-navigation" aria-label="Page actions"><label class="language-control"><span data-i18n="Language">Language</span><select id="language-select" aria-label="Language"><option value="en">English</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ar">العربية</option></select></label><button id="contact-button" class="theme-toggle discord-action contact-button" type="button" aria-label="Open Discord profile"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M20.317 4.37A19.8 19.8 0 0 0 15.885 3c-.191.329-.403.775-.552 1.126a18.27 18.27 0 0 0-5.465 0A12.64 12.64 0 0 0 9.316 3a19.74 19.74 0 0 0-4.438 1.37C2.077 8.47 1.316 12.47 1.696 16.412a19.9 19.9 0 0 0 5.457 2.755c.44-.605.833-1.245 1.17-1.918-.642-.24-1.255-.537-1.83-.887.153-.113.303-.232.448-.354 3.525 1.645 7.352 1.645 10.835 0 .147.122.297.241.45.354-.576.35-1.19.649-1.833.889.337.673.73 1.313 1.17 1.917a19.88 19.88 0 0 0 5.458-2.755c.445-4.574-.76-8.536-3.204-12.042ZM8.02 13.956c-1.06 0-1.93-.975-1.93-2.174s.853-2.174 1.93-2.174 1.948.984 1.93 2.174c0 1.199-.854 2.174-1.93 2.174Zm7.14 0c-1.06 0-1.93-.975-1.93-2.174s.852-2.174 1.93-2.174c1.077 0 1.947.984 1.93 2.174 0 1.199-.853 2.174-1.93 2.174Z"/></svg><small>Contact</small></button><button id="discord-server-button" class="theme-toggle discord-action" type="button" aria-label="Open Discord server"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M20.317 4.37A19.8 19.8 0 0 0 15.885 3c-.191.329-.403.775-.552 1.126a18.27 18.27 0 0 0-5.465 0A12.64 12.64 0 0 0 9.316 3a19.74 19.74 0 0 0-4.438 1.37C2.077 8.47 1.316 12.47 1.696 16.412a19.9 19.9 0 0 0 5.457 2.755c.44-.605.833-1.245 1.17-1.918-.642-.24-1.255-.537-1.83-.887.153-.113.303-.232.448-.354 3.525 1.645 7.352 1.645 10.835 0 .147.122.297.241.45.354-.576.35-1.19.649-1.833.889.337.673.73 1.313 1.17 1.917a19.88 19.88 0 0 0 5.458-2.755c.445-4.574-.76-8.536-3.204-12.042ZM8.02 13.956c-1.06 0-1.93-.975-1.93-2.174s.853-2.174 1.93-2.174 1.948.984 1.93 2.174c0 1.199-.854 2.174-1.93 2.174Zm7.14 0c-1.06 0-1.93-.975-1.93-2.174s.852-2.174 1.93-2.174c1.077 0 1.947.984 1.93 2.174 0 1.199-.853 2.174-1.93 2.174Z"/></svg><small>Server</small></button><button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false"><span aria-hidden="true">☼</span><small>Light</small></button><button id="install-button" class="button button-quiet install-button" hidden>Install</button><span class="admin-only" aria-hidden="true"><button id="sync-discord" type="button" tabindex="-1">Sync Discord</button><button id="import-button" type="button" tabindex="-1">Import</button><button id="paste-button" type="button" tabindex="-1">Add guide</button></span></nav>
+      <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Open navigation" aria-controls="app-sidebar" aria-expanded="false">☰</button>
+      <a class="topbar-brand" href="#home" aria-label="Pirate Reborn Guidebook home"><span class="topbar-home-logo"><img src="./assets/pirate-reborn-app-icon-original.png" alt=""></span><span class="topbar-title"><span class="topbar-kicker">PIRATE REBORN</span><strong id="page-title">Home</strong></span></a>
+      <nav class="header-destination-nav" aria-label="Main">
+        <a class="header-nav-link" href="#home" data-page="home" aria-current="page">Home</a>
+        <a class="header-nav-link" href="#unit-builds" data-page="unit-builds">Builds</a>
+        <a class="header-nav-link" href="#wish-calendar" data-page="wish-calendar">Wishes</a>
+        <a class="header-nav-link" href="#inbox" data-page="inbox">Inbox</a>
+      </nav>
+      <div class="topbar-actions">
+      <button class="mobile-more-trigger" id="mobile-more-button" type="button" aria-label="Open more navigation" aria-controls="mobile-more-dialog" aria-expanded="false">☰</button>
+      <div class="top-navigation"><label class="language-control"><span data-i18n="Language">Language</span><select id="language-select" aria-label="Language"><option value="en">English</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ar">العربية</option></select></label><button id="contact-button" class="theme-toggle discord-action contact-button" type="button" aria-label="Open Discord profile"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M20.317 4.37A19.8 19.8 0 0 0 15.885 3c-.191.329-.403.775-.552 1.126a18.27 18.27 0 0 0-5.465 0A12.64 12.64 0 0 0 9.316 3a19.74 19.74 0 0 0-4.438 1.37C2.077 8.47 1.316 12.47 1.696 16.412a19.9 19.9 0 0 0 5.457 2.755c.44-.605.833-1.245 1.17-1.918-.642-.24-1.255-.537-1.83-.887.153-.113.303-.232.448-.354 3.525 1.645 7.352 1.645 10.835 0 .147.122.297.241.45.354-.576.35-1.19.649-1.833.889.337.673.73 1.313 1.17 1.917a19.88 19.88 0 0 0 5.458-2.755c.445-4.574-.76-8.536-3.204-12.042ZM8.02 13.956c-1.06 0-1.93-.975-1.93-2.174s.853-2.174 1.93-2.174 1.948.984 1.93 2.174c0 1.199-.854 2.174-1.93 2.174Zm7.14 0c-1.06 0-1.93-.975-1.93-2.174s.852-2.174 1.93-2.174c1.077 0 1.947.984 1.93 2.174 0 1.199-.853 2.174-1.93 2.174Z"/></svg><small>Contact</small></button><button id="discord-server-button" class="theme-toggle discord-action" type="button" aria-label="Open Discord server"><svg aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M20.317 4.37A19.8 19.8 0 0 0 15.885 3c-.191.329-.403.775-.552 1.126a18.27 18.27 0 0 0-5.465 0A12.64 12.64 0 0 0 9.316 3a19.74 19.74 0 0 0-4.438 1.37C2.077 8.47 1.316 12.47 1.696 16.412a19.9 19.9 0 0 0 5.457 2.755c.44-.605.833-1.245 1.17-1.918-.642-.24-1.255-.537-1.83-.887.153-.113.303-.232.448-.354 3.525 1.645 7.352 1.645 10.835 0 .147.122.297.241.45.354-.576.35-1.19.649-1.833.889.337.673.73 1.313 1.17 1.917a19.88 19.88 0 0 0 5.458-2.755c.445-4.574-.76-8.536-3.204-12.042ZM8.02 13.956c-1.06 0-1.93-.975-1.93-2.174s.853-2.174 1.93-2.174 1.948.984 1.93 2.174c0 1.199-.854 2.174-1.93 2.174Zm7.14 0c-1.06 0-1.93-.975-1.93-2.174s.852-2.174 1.93-2.174c1.077 0 1.947.984 1.93 2.174 0 1.199-.853 2.174-1.93 2.174Z"/></svg><small>Server</small></button><button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false"><span aria-hidden="true">☼</span><small>Light</small></button><button id="install-button" class="button button-quiet install-button" hidden>Install</button><span class="admin-only" aria-hidden="true"><button id="sync-discord" type="button" tabindex="-1">Sync Discord</button><button id="import-button" type="button" tabindex="-1">Import</button><button id="paste-button" type="button" tabindex="-1">Add guide</button></span></div></div>
     </header>
 
     <nav class="mobile-bottom-nav" aria-label="Primary navigation">
-      <button class="mobile-nav-link" type="button" data-page="home" aria-current="page"><span aria-hidden="true">⌂</span><small>Home</small></button>
-      <button class="mobile-nav-link" type="button" data-page="unit-builds"><span aria-hidden="true">⚔</span><small>Builds</small></button>
-      <button class="mobile-nav-link" type="button" data-page="heroine"><span aria-hidden="true">✿</span><small>Heroines</small></button>
-      <button class="mobile-nav-link" type="button" data-page="artifacts"><span aria-hidden="true">◈</span><small>Artifacts</small></button>
-      <button class="mobile-nav-link" id="mobile-more-button" type="button" aria-haspopup="dialog" aria-controls="mobile-more-dialog" aria-expanded="false"><span aria-hidden="true">•••</span><small>More</small></button>
+      <a class="mobile-nav-link" href="#home" data-page="home" aria-current="page"><span aria-hidden="true">⌂</span><small>Home</small></a>
+      <a class="mobile-nav-link" href="#unit-builds" data-page="unit-builds"><span aria-hidden="true">⚔</span><small>Builds</small></a>
+      <a class="mobile-nav-link" href="#wish-calendar" data-page="wish-calendar"><span aria-hidden="true">◷</span><small>Wishes</small></a>
+      <a class="mobile-nav-link inbox-nav-link" href="#inbox" data-page="inbox" aria-label="Inbox"><span aria-hidden="true">✉</span><small>Inbox</small><span class="mobile-nav-badge" id="mobile-inbox-count" aria-label="0 unread updates" aria-live="polite" hidden>0</span></a>
     </nav>
     <dialog id="mobile-more-dialog" class="mobile-more-dialog" aria-labelledby="mobile-more-title">
       <div class="mobile-more-heading"><h2 id="mobile-more-title">More</h2><button class="dialog-close" id="mobile-more-close" type="button" aria-label="Close more menu">×</button></div>
-      <nav class="mobile-more-links" aria-label="More destinations">
-        <button class="mobile-more-link mobile-more-profile" type="button" data-open-profile><span class="mobile-more-avatar"><img id="mobile-profile-avatar" alt="" hidden><span id="mobile-profile-avatar-fallback" aria-hidden="true">✦</span></span><span class="mobile-more-profile-copy"><strong>Profile</strong><small id="mobile-profile-name">Set sail, captain</small></span></button>
-        <button class="mobile-more-link" id="mobile-add-guide" type="button"><span aria-hidden="true">📚</span>Guides</button>
-        <button class="mobile-more-link" id="mobile-sea-soul" type="button"><span aria-hidden="true">♆</span>Sea Soul</button>
-        <button class="mobile-more-link" type="button" data-page="tier-list"><span aria-hidden="true">📊</span>Tier List</button>
-        <button class="mobile-more-link" type="button" data-page="wish-calendar"><span aria-hidden="true">◷</span>Wish Calendar</button>
-        <button class="mobile-more-link" type="button" data-page="events"><span aria-hidden="true">🗓️</span>Events</button>
-        <button class="mobile-more-link" type="button" data-page="downloads"><span aria-hidden="true">⇩</span>Downloads</button>
+      <nav class="mobile-more-links" id="mobile-more-links" aria-label="More destinations">
+        <div class="mobile-more-panel is-active" data-more-panel="root" aria-label="More options">
+          <button class="mobile-more-link mobile-more-profile" type="button" data-open-profile><span class="mobile-more-avatar"><img id="mobile-profile-avatar" alt="" hidden><span id="mobile-profile-avatar-fallback" aria-hidden="true">✦</span></span><span class="mobile-more-profile-copy"><strong>Profile</strong><small id="mobile-profile-name">Set sail, captain</small></span></button>
+          <button class="mobile-more-link mobile-more-disclosure" type="button" data-more-open="collections" aria-expanded="false" aria-controls="mobile-more-collections"><span aria-hidden="true">✦</span><span class="mobile-more-label">Collections</span><span class="mobile-more-chevron" aria-hidden="true">›</span></button>
+          <button class="mobile-more-link mobile-more-disclosure" type="button" data-more-open="trackers" aria-expanded="false" aria-controls="mobile-more-trackers"><span aria-hidden="true">◷</span><span class="mobile-more-label">Trackers</span><span class="mobile-more-chevron" aria-hidden="true">›</span></button>
+          <button class="mobile-more-link mobile-more-disclosure" type="button" data-more-open="resources" aria-expanded="false" aria-controls="mobile-more-resources"><span aria-hidden="true">▤</span><span class="mobile-more-label">Guides & resources</span><span class="mobile-more-chevron" aria-hidden="true">›</span></button>
+          <button class="mobile-more-link" id="mobile-tour-launcher" type="button" data-start-product-tour><span aria-hidden="true">ⓘ</span>Take a tour</button>
+        </div>
+        <div class="mobile-more-panel" id="mobile-more-collections" data-more-panel="collections" aria-label="Collections" hidden>
+          <button class="mobile-more-link mobile-more-back" type="button" data-more-back><span aria-hidden="true">‹</span>Back to More</button>
+          <button class="mobile-more-link" type="button" data-page="heroine"><span aria-hidden="true">✿</span>Heroines</button>
+          <button class="mobile-more-link" type="button" data-page="artifacts"><span aria-hidden="true">◈</span>Artifacts</button>
+          <button class="mobile-more-link" id="mobile-sea-soul" type="button"><span aria-hidden="true">♆</span>Sea Soul</button>
+        </div>
+        <div class="mobile-more-panel" id="mobile-more-trackers" data-more-panel="trackers" aria-label="Trackers" hidden>
+          <button class="mobile-more-link mobile-more-back" type="button" data-more-back><span aria-hidden="true">‹</span>Back to More</button>
+          <button class="mobile-more-link" type="button" data-page="wish-calendar"><span aria-hidden="true">◷</span>Wish Calendar</button>
+          <button class="mobile-more-link" type="button" data-page="events"><span aria-hidden="true">🗓️</span>Events</button>
+        </div>
+        <div class="mobile-more-panel" id="mobile-more-resources" data-more-panel="resources" aria-label="Guides and resources" hidden>
+          <button class="mobile-more-link mobile-more-back" type="button" data-more-back><span aria-hidden="true">‹</span>Back to More</button>
+          <button class="mobile-more-link" id="mobile-add-guide" type="button"><span aria-hidden="true">📚</span>Guides</button>
+          <button class="mobile-more-link" type="button" data-page="tier-list"><span aria-hidden="true">📊</span>Tier List</button>
+          <button class="mobile-more-link" type="button" data-page="downloads"><span aria-hidden="true">⇩</span>Downloads</button>
+        </div>
       </nav>
     </dialog>
 
@@ -78,7 +103,7 @@
       <section class="hero compact-hero" id="home">
         <div id="home-light-rays" aria-hidden="true"></div>
         <div class="hero-copy">
-          <p class="eyebrow"><span class="eyebrow-dot"></span> YOUR PIRATE REBORN COMPANION</p>
+          <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span><span id="home-kicker" aria-label="YOUR PIRATE REBORN COMPANION"><span class="scramble-visual" aria-hidden="true">YOUR PIRATE REBORN COMPANION</span></span></p>
           <h1 id="home-title">Welcome aboard, captain.</h1>
           <p class="hero-subtitle">Your home for unit builds, crew ideas, and everything you collect along the voyage.</p>
           <p id="import-status" class="import-status admin-only" aria-live="polite"></p>
@@ -168,6 +193,12 @@
         <section class="wish-banner-board" id="wish-banner-board" aria-labelledby="wish-banner-title" hidden><div class="wish-banner-heading"><div><span class="tier-section-kicker">WISH BANNER LINEUP</span><h2 id="wish-banner-title">Banner Units</h2><p id="wish-banner-date"></p></div><div class="tier-heading-actions"><span class="wish-live-badge" id="wish-banner-live" hidden>● LIVE TODAY</span><span class="tier-empty-badge" id="wish-banner-count">0 UNITS</span><button id="wish-banner-save" class="button button-outline lineup-save-button" type="button" hidden>Save lineup</button><button id="wish-banner-add" class="tier-add-button" type="button" aria-label="Add a unit to this wish banner" title="Add a banner unit">＋</button></div></div><div class="wish-banner-tabs" id="wish-banner-tabs" role="tablist" aria-label="Choose a wish banner"></div><p class="wish-banner-empty" id="wish-banner-empty">No units added yet. Use + to choose the units featured in this banner.</p><div class="top-tiers-grid wish-banner-grid" id="wish-banner-grid" hidden></div></section>
       </section>
       <section class="page-view wish-calendar-view" data-view="events" id="events-view" hidden><div class="wish-calendar-heading"><div><p class="eyebrow">GAME EVENT TRACKER</p><h1>Events</h1><p>Pick an activity, add its time from your in-game calendar, and keep a live countdown here.</p></div><span class="wish-calendar-emblem" aria-hidden="true">🗓️</span></div><section class="event-type-panel" aria-label="Add a game activity"><p class="eyebrow">ADD A TIMER</p><div class="event-type-shortcuts"><button type="button" data-add-event-type="Sanctuary"><span>🏝️</span>Sanctuary</button><button type="button" data-add-event-type="Adventures"><span>🧭</span>Adventures</button><button type="button" data-add-event-type="Voyage"><span>⛵</span>Voyage</button><button type="button" data-add-event-type="Custom"><span>＋</span>Other event</button></div></section><section class="personal-events" aria-labelledby="personal-events-title"><div class="personal-events-heading"><div><p class="eyebrow">YOUR CALENDAR</p><h2 id="personal-events-title">Event timers</h2></div><button class="button button-primary" id="event-add" type="button">＋ Add event</button></div><div id="personal-events-list" class="personal-events-list" aria-live="polite"></div><p id="personal-events-empty" class="personal-events-empty" hidden>No event timers yet. Pick Sanctuary, Adventures, or Voyage to add your first one.</p></section></section>
+      <section class="page-view inbox-view" data-view="inbox" id="inbox-view" hidden>
+        <div class="collection-heading inbox-heading"><div><p class="eyebrow">YOUR UPDATES</p><h1>Inbox</h1><p>New unit builds and refreshed recommendations from your guidebook.</p></div><button class="button button-outline" id="inbox-mark-read" type="button">Mark all read</button></div>
+        <p class="inbox-unread-summary" id="inbox-unread-summary" aria-live="polite"></p>
+        <div class="inbox-list" id="inbox-list"></div>
+        <p class="inbox-empty" id="inbox-empty" hidden>You’re all caught up. New or refreshed builds will appear here.</p>
+      </section>
     </main>
 
     <footer class="footer"><span>Built for your crew.</span><span id="offline-label">Offline-ready guidebook</span></footer>
@@ -226,8 +257,20 @@
       <div class="paste-actions"><button type="button" id="discord-connect-cancel" class="button button-outline">Cancel</button><button id="discord-connect-submit" type="submit" class="button button-primary">Connect bot</button></div>
     </form>
   </dialog>
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="app.js?v=20261022-weevil-ur-v71" defer></script>
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div class="product-tour" id="product-tour" hidden>
+    <svg class="product-tour-scrim" id="product-tour-scrim" aria-hidden="true" focusable="false">
+      <defs><mask id="product-tour-mask" maskUnits="userSpaceOnUse"><rect id="product-tour-mask-base" fill="white"></rect><rect id="product-tour-hole" x="-30" y="-30" width="1" height="1" rx="12" fill="black"></rect></mask></defs>
+      <rect id="product-tour-dim" fill="rgba(0, 0, 0, .52)" mask="url(#product-tour-mask)"></rect>
+    </svg>
+    <section class="product-tour-bubble" id="product-tour-bubble" role="group" aria-labelledby="product-tour-title" aria-describedby="product-tour-description" tabindex="-1">
+      <div class="product-tour-meta"><span id="product-tour-step" aria-live="polite">1 of 4</span><button class="product-tour-skip" id="product-tour-skip" type="button">Skip</button></div>
+      <h2 id="product-tour-title"></h2><p id="product-tour-description"></p>
+      <div class="product-tour-actions"><button class="product-tour-back" id="product-tour-back" type="button">Back</button><button class="product-tour-next" id="product-tour-next" type="button">Next</button></div>
+    </section>
+  </div>
+  <script src="app.js?v=20261023-text-scramble-v1" defer></script>
+  <script src="product-tour.js" defer></script>
   <script src="motion.bundle.js?v=20261021-performance-v1" defer></script>
 </body>
 </html>

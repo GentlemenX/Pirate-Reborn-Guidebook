@@ -11,9 +11,10 @@ const SITE_SETTINGS_KEY = 'pirate-reborn-site-settings-v1';
 const COLLECTIONS_KEY = 'pirate-reborn-custom-collections-v1';
 const DOWNLOAD_GUIDES_KEY = 'pirate-reborn-download-guides-v1';
 const PLATFORM_DOWNLOADS_KEY = 'pirate-reborn-platform-downloads-v1';
+const INBOX_KEY = 'pirate-reborn-inbox-v1';
 const LANGUAGE_KEY = 'pirate-reborn-language-v1';
 const BUNDLED_PROFILE_IMPORT_KEY = 'pirate-reborn-bundled-profile-import-v1';
-const BACKUP_KEYS = [STORAGE_KEY, DELETED_GUIDES_KEY, THEME_KEY, LANGUAGE_KEY, TOP_TIERS_KEY, WISH_BANNER_KEY, PERSONAL_EVENTS_KEY, ACTIVITY_REMINDERS_KEY, SITE_SETTINGS_KEY, COLLECTIONS_KEY, DOWNLOAD_GUIDES_KEY, PLATFORM_DOWNLOADS_KEY, 'pirate-reborn-custom-guides-v1', 'pirate-reborn-sea-soul-entries-v1', 'pirate-reborn-placeholder-collections-seeded-v1', 'pirate-reborn-theme-default-v2'];
+const BACKUP_KEYS = [STORAGE_KEY, DELETED_GUIDES_KEY, THEME_KEY, LANGUAGE_KEY, TOP_TIERS_KEY, WISH_BANNER_KEY, PERSONAL_EVENTS_KEY, ACTIVITY_REMINDERS_KEY, SITE_SETTINGS_KEY, COLLECTIONS_KEY, DOWNLOAD_GUIDES_KEY, PLATFORM_DOWNLOADS_KEY, INBOX_KEY, 'pirate-reborn-custom-guides-v1', 'pirate-reborn-sea-soul-entries-v1', 'pirate-reborn-placeholder-collections-seeded-v1', 'pirate-reborn-theme-default-v2'];
 const WISH_BANNERS = [
   { id: 'uta-2026-10-20', name: 'Uta', date: 'October 20, 2026', day: '2026-10-20', endDay: '2026-10-23', endAt: '2026-10-23T00:00:00' },
   { id: 'sabo-2026-11-03', name: 'Sabo', date: 'November 3, 2026', day: '2026-11-03' }
@@ -933,8 +934,57 @@ for (const [slot, build] of Object.entries(REGULAR_UNIT_BUILDS)) {
   guide.source = build.source || 'User supplied regular unit build';
 }
 const state = { guides: [], category: 'ur-list', tag: '', favoritesOnly: false, query: '', sortBy: 'name' };
+let inboxUpdates = [];
 let deletedGuideIds = new Set();
-const PAGE_TITLES = { home: 'Home', 'unit-builds': 'Unit Builds', guides: 'Guides', 'sea-soul': 'Sea Soul', heroine: 'Heroine', artifacts: 'Artifacts', 'tier-list': 'Tier List', 'wish-calendar': 'Wish Calendar', events: 'Events', downloads: 'Downloads' };
+const PAGE_TITLES = { home: 'Home', 'unit-builds': 'Unit Builds', guides: 'Guides', 'sea-soul': 'Sea Soul', heroine: 'Heroine', artifacts: 'Artifacts', 'tier-list': 'Tier List', 'wish-calendar': 'Wish Calendar', events: 'Events', downloads: 'Downloads', inbox: 'Inbox' };
+function loadInboxUpdates() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(INBOX_KEY) || '[]');
+    inboxUpdates = Array.isArray(saved) ? saved.filter(item => item && typeof item.id === 'string' && typeof item.title === 'string').slice(0, 100) : [];
+  } catch { inboxUpdates = []; }
+}
+function saveInboxUpdates() {
+  try { localStorage.setItem(INBOX_KEY, JSON.stringify(inboxUpdates.slice(0, 100))); return true; }
+  catch { showToast('Inbox updates could not be saved on this device.'); return false; }
+}
+function renderInbox() {
+  const unreadCount = inboxUpdates.filter(item => !item.read).length;
+  const badge = $('#mobile-inbox-count');
+  badge.textContent = unreadCount > 99 ? '99+' : String(unreadCount);
+  badge.setAttribute('aria-label', `${unreadCount} unread updates`);
+  badge.hidden = unreadCount === 0;
+  const inboxLink = document.querySelector('.inbox-nav-link');
+  inboxLink.setAttribute('aria-label', unreadCount ? `Inbox, ${unreadCount} unread update${unreadCount === 1 ? '' : 's'}` : 'Inbox');
+  const sidebarBadge = $('#sidebar-inbox-count');
+  sidebarBadge.textContent = unreadCount > 99 ? '99+' : String(unreadCount);
+  sidebarBadge.hidden = unreadCount === 0;
+  $('#inbox-unread-summary').textContent = unreadCount ? `${unreadCount} unread update${unreadCount === 1 ? '' : 's'}` : 'You’re all caught up.';
+  $('#inbox-empty').hidden = inboxUpdates.length > 0;
+  $('#inbox-mark-read').disabled = unreadCount === 0;
+  $('#inbox-list').innerHTML = inboxUpdates.map(item => {
+    const guide = state.guides.find(entry => entry.id === item.guideId);
+    const typeLabel = item.kind === 'new' ? 'New build' : 'Build updated';
+    const dateLabel = new Date(Number(item.createdAt) || Date.now()).toLocaleDateString();
+    return `<article class="inbox-item${item.read ? '' : ' is-unread'}"><div class="inbox-item-copy"><span class="inbox-item-kind">${typeLabel}</span><h2>${escapeHtml(item.title)}</h2><p>${dateLabel}</p></div><button class="button button-outline inbox-open-button" type="button" data-inbox-guide="${escapeHtml(item.guideId)}"${guide ? '' : ' disabled'}>${guide ? 'Open build' : 'Build unavailable'}</button></article>`;
+  }).join('');
+}
+function recordInboxUpdates(addedGuides, refreshedGuides) {
+  const recordedAt = Date.now();
+  const entries = [
+    ...addedGuides.map(guide => ({ guide, kind: 'new' })),
+    ...refreshedGuides.map(guide => ({ guide, kind: 'updated' }))
+  ];
+  if (!entries.length) return;
+  const known = new Set(inboxUpdates.map(item => item.id));
+  for (const { guide, kind } of entries) {
+    const id = `${kind}:${guide.id}:${guide.updatedAt || guide.date || recordedAt}`;
+    if (known.has(id)) continue;
+    known.add(id);
+    inboxUpdates.unshift({ id, guideId: guide.id, title: guide.title, kind, createdAt: recordedAt, read: false });
+  }
+  inboxUpdates = inboxUpdates.slice(0, 100);
+  saveInboxUpdates();
+}
 const LANGUAGE_TEXT = {
   fr: {
     Language: 'Langue', Home: 'Accueil', 'Unit Builds': 'Constructions', Guides: 'Guides', Heroine: 'Héroïnes', Heroines: 'Héroïnes', Artifacts: 'Artefacts', 'Sea Soul': 'Âme marine', 'Sea Souls': 'Âmes marines', 'Tier List': 'Classement', 'Wish Calendar': 'Calendrier des invocations', Events: 'Événements', Downloads: 'Téléchargements', Builds: 'Constructions', More: 'Plus', Profile: 'Profil', Contact: 'Contact', Server: 'Serveur', Light: 'Clair', Dark: 'Sombre', Install: 'Installer', 'Set sail, captain': 'En avant, capitaine', 'Your guide deck, at a glance.': 'Votre guide de bord, en un coup d’œil.', 'YOUR PIRATE REBORN COMPANION': 'VOTRE COMPAGNON PIRATE REBORN', 'Welcome aboard, captain.': 'Bienvenue à bord, capitaine.', 'Your home for unit builds, crew ideas, and everything you collect along the voyage.': 'Vos builds, idées d’équipage et trouvailles au fil du voyage.', 'CHOOSE YOUR COURSE': 'CHOISISSEZ VOTRE CAP', 'Explore the guidebook': 'Explorer le guide', 'QUICK ACCESS': 'ACCÈS RAPIDE', 'YOUR LOGBOOK': 'VOTRE JOURNAL DE BORD', 'Recently added': 'Ajouts récents', 'All guides': 'Tous les guides', 'QUICK DESTINATIONS': 'DESTINATIONS RAPIDES', 'Browse character recommendations': 'Voir les recommandations de personnages', 'Browse heroine builds': 'Voir les builds d’héroïnes', 'Artifact picks from the guides': 'Artefacts recommandés dans les guides', 'Ascension and saved guides': 'Ascension et guides enregistrés', 'Your saved Sea Soul collection': 'Votre collection d’âmes marines', 'Rank DPS, tanks, and support': 'Classer les DPS, tanks et supports', 'Banner rotation schedule': 'Calendrier de rotation des bannières', 'Sanctuary, Adventures, Voyage timers': 'Minuteries du Sanctuaire, des Aventures et du Voyage', 'App links and guide files': 'Liens de l’application et fichiers des guides', 'CREW ARCHIVE': 'ARCHIVES DE L’ÉQUIPAGE', 'UR units': 'Unités UR', 'Regular units': 'Unités normales', 'UR and Regular Units have separate lists and page controls.': 'Les unités UR et normales ont des listes et une pagination séparées.', Favorites: 'Favoris', 'SORT BY': 'TRIER PAR', 'Name · A–Z': 'Nom · A–Z', 'Channel · A–Z': 'Canal · A–Z', 'Newest first': 'Plus récents', 'Recently updated': 'Modifiés récemment', 'Favorites first': 'Favoris en premier', TAG: 'ÉTIQUETTE', 'All tags': 'Toutes les étiquettes', Roles: 'Rôles', 'Guide tags': 'Étiquettes des guides', 'Unit groups': 'Groupes d’unités', 'Clear filters': 'Effacer les filtres', 'Search characters, builds, sections…': 'Rechercher des personnages, builds, sections…', 'Search all guides': 'Rechercher dans tous les guides', 'Your guide deck is ready': 'Votre guide est prêt', 'Your guide library is empty. Guides will appear here when they’re available.': 'Votre bibliothèque est vide. Les guides apparaîtront ici dès qu’ils seront disponibles.', 'Restore built-in builds': 'Restaurer les builds intégrés', 'Back to all guides': 'Retour à tous les guides', 'YOUR GUIDE DECK': 'VOTRE GUIDE DE BORD', 'Standalone guides saved separately from Unit Builds.': 'Guides indépendants, enregistrés séparément des builds.', '＋ Add guide': '＋ Ajouter un guide', 'UNIT PROGRESSION': 'PROGRESSION DES UNITÉS', Ascension: 'Ascension', 'Choose a unit type to view its ascension chart.': 'Choisissez un type d’unité pour afficher son tableau d’ascension.', 'Normal · Sengoku': 'Normale · Sengoku', 'PROGRESSION STRATEGY': 'STRATÉGIE DE PROGRESSION', 'F2P & P2W Guides': 'Guides gratuit et payant', 'Choose the play style you want recommendations for.': 'Choisissez le style de jeu pour vos recommandations.', 'Free-to-Play': 'Gratuit', P2W: 'Payant', 'No guides added yet. Add a guide to start your collection.': 'Aucun guide. Ajoutez-en un pour commencer votre collection.', 'STANDALONE COLLECTION': 'COLLECTION INDÉPENDANTE', 'Add a Sea Soul to start your collection.': 'Ajoutez une âme marine pour commencer votre collection.', 'Your guide logbook is empty for now.': 'Votre journal de guides est vide pour le moment.', 'No guides found': 'Aucun guide trouvé', 'Try a shorter search, another channel or tag, or clear the filters to see your full library.': 'Essayez une recherche plus courte, un autre canal ou une autre étiquette, ou effacez les filtres.', 'Your saved crew is empty': 'Votre équipage enregistré est vide', 'Tap the ☆ on any guide card to save it here. Saved guides stay on this device and can still be filtered by channel or tag.': 'Appuyez sur ☆ sur une fiche pour l’enregistrer ici. Les guides restent sur cet appareil et peuvent être filtrés.', 'No upcoming wish listed': 'Aucune invocation à venir', 'Waiting for the next rotation': 'En attente de la prochaine rotation', 'Cancel': 'Annuler', Save: 'Enregistrer', Delete: 'Supprimer', Edit: 'Modifier', Search: 'Rechercher', 'Back to all guides': 'Retour à tous les guides'
@@ -1366,6 +1416,10 @@ const discordConnectDialog = $('#discord-connect-dialog');
 const toast = $('#toast');
 const searchSuggestions = $('#search-suggestions');
 let toastTimer;
+let toastTimerEndsAt = 0;
+let toastTimerRemaining = 0;
+let toastPointerInside = false;
+let toastFocusInside = false;
 let installPrompt;
 const GUIDE_GRID_PAGE_SIZE = 24;
 let guideGridPageSignature = '';
@@ -1742,17 +1796,59 @@ function markdownToHtml(markdown) {
   return output.join('\n');
 }
 
+function pauseToastTimer() {
+  if (!toastTimer) return;
+  toastTimerRemaining = Math.max(0, toastTimerEndsAt - Date.now());
+  clearTimeout(toastTimer);
+  toastTimer = null;
+  toastTimerEndsAt = 0;
+}
+
+function resumeToastTimer() {
+  if (toastTimer || !toast.classList.contains('show') || toastPointerInside || toastFocusInside || toastTimerRemaining <= 0) return;
+  toastTimerEndsAt = Date.now() + toastTimerRemaining;
+  toastTimer = setTimeout(dismissToast, toastTimerRemaining);
+}
+
+function dismissToast() {
+  clearTimeout(toastTimer);
+  toastTimer = null;
+  toastTimerEndsAt = 0;
+  toastTimerRemaining = 0;
+  toast.classList.remove('show');
+}
+
+function startToastTimer(duration) {
+  clearTimeout(toastTimer);
+  toastTimer = null;
+  toastTimerRemaining = duration;
+  resumeToastTimer();
+}
+
+toast.addEventListener('pointerenter', () => { toastPointerInside = true; pauseToastTimer(); });
+toast.addEventListener('pointerleave', () => { toastPointerInside = false; resumeToastTimer(); });
+toast.addEventListener('focusin', () => { toastFocusInside = true; pauseToastTimer(); });
+toast.addEventListener('focusout', event => {
+  if (toast.contains(event.relatedTarget)) return;
+  toastFocusInside = false;
+  resumeToastTimer();
+});
+
 function showToast(message) {
-  toast.replaceChildren(document.createTextNode(message)); toast.classList.add('show');
-  clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+  toast.replaceChildren(document.createTextNode(message));
+  toast.classList.add('show');
+  startToastTimer(2600);
 }
 
 function showUndoToast(message, onUndo) {
   const undo = document.createElement('button');
-  undo.type = 'button'; undo.className = 'toast-undo'; undo.textContent = 'Undo';
-  undo.addEventListener('click', () => { clearTimeout(toastTimer); toast.classList.remove('show'); onUndo(); }, { once: true });
-  toast.replaceChildren(document.createTextNode(`${message} `), undo); toast.classList.add('show');
-  clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 6000);
+  undo.type = 'button';
+  undo.className = 'toast-undo';
+  undo.textContent = 'Undo';
+  undo.addEventListener('click', () => { dismissToast(); onUndo(); }, { once: true });
+  toast.replaceChildren(document.createTextNode(`${message} `), undo);
+  toast.classList.add('show');
+  startToastTimer(6000);
 }
 
 function categoryList() {
@@ -1938,7 +2034,7 @@ function renderWishBanner() {
   const cooldownDays = isLive && followingWish ? daysBetweenWishDates(liveBanner.endDay, followingWish.banner.day) : 0;
   const inCooldown = !isLive && !!banner && WISH_BANNERS.some(item => item.endDay && daysUntilWish(item.endDay) <= 0 && daysUntilWish(item.day) < 0);
   const selectedWish = WISH_BANNERS.find(item => item.id === activeWishBannerId);
-  if (!selectedWish || (selectedWish.endDay && daysUntilWish(selectedWish.endDay) <= 0)) activeWishBannerId = banner?.id || WISH_BANNERS[0]?.id || null;
+  if (!selectedWish) activeWishBannerId = banner?.id || WISH_BANNERS[0]?.id || null;
   const currentEvent = $('#wish-current-event');
   const status = isLive ? `<span class="wish-current-live-pill">● LIVE</span><span>ENDS IN ${countdownUntilWish(liveBanner.endAt || liveBanner.endDay)}</span>` : `<span>${inCooldown ? 'COOLDOWN' : 'STARTS IN'}</span><span>${escapeHtml(banner?.name || '')} ${countdownUntilWish(banner?.day || '')}</span>`;
   const eventType = isLive ? 'WISH DAY IS HERE' : inCooldown ? 'COOLDOWN UNTIL NEXT WISH' : 'NEXT WISH';
@@ -2217,7 +2313,7 @@ function renderHomeDestinations(favoriteCount) {
     const photoUrl = photo && String(photo).startsWith('data:image/') ? photo : safeUrl(photo);
     const image = photoUrl ? `<img class="home-destination-image" src="${escapeHtml(photoUrl)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : '';
     const action = item.recent ? 'data-home-recent="true"' : item.favorites ? 'data-home-favorites="true"' : `data-page="${item.page}"`;
-    return `<button class="home-destination-card home-destination-card-${index + 1}" type="button" ${action} aria-label="Open ${item.title}"><span class="home-destination-fallback" aria-hidden="true">${item.icon}</span>${image}<span class="home-destination-shade"></span><span class="home-destination-copy"><strong>${item.title}</strong><small>${item.meta}</small></span><span class="home-destination-arrow" aria-hidden="true">↗</span></button>`;
+    return `<button class="home-destination-card home-destination-card-${index + 1}" type="button" ${action} aria-label="Open ${item.title}"><span class="home-destination-fallback" aria-hidden="true">${item.icon}</span>${image ? `<span class="home-destination-parallax-layer">${image}</span>` : ''}<span class="home-destination-shade"></span><span class="home-destination-copy"><strong>${item.title}</strong><small>${item.meta}</small></span><span class="home-destination-arrow" aria-hidden="true">↗</span></button>`;
   }).join('');
   $('#home-destination-grid').querySelectorAll('.home-destination-image').forEach(image => image.addEventListener('error', () => { image.hidden = true; }, { once: true }));
 }
@@ -2466,6 +2562,7 @@ function openCustomGuide(id) {
   }).join('') : '';
   $('#dialog-content').innerHTML = `<article class="guide-detail custom-guide-detail"><p class="eyebrow">${escapeHtml(guide.group || 'YOUR GUIDE')}</p><h2>${escapeHtml(guide.title)}</h2>${guide.summary ? `<p class="guide-summary">${escapeHtml(guide.summary)}</p>` : ''}${image}<div class="guide-content">${markdownToHtml(guide.content || '')}</div>${sections}</article>`;
   dialog.showModal();
+  setupArticleScrollspy($('#dialog-content').querySelector('.custom-guide-detail'));
 }
 
 function renderHomeRecentGuides() {
@@ -2527,6 +2624,7 @@ function render() {
   renderHomeDestinations(favoriteCount);
   renderFeaturedGuide();
   renderHomeRecentGuides();
+  renderInbox();
   $('#favorites-toggle').setAttribute('aria-label', `Show saved guides (${favoriteCount})`);
   const pageSignature = [state.category, state.tag, state.query, state.favoritesOnly, state.sortBy].join('|');
   if (pageSignature !== guideGridPageSignature) {
@@ -2660,6 +2758,117 @@ function parseBuildContentSections(content) {
   return { intro: intro.join('\n').trim(), fields: fields.map(field => ({ ...field, value: field.value.trim() })) };
 }
 
+let articleScrollspySequence = 0;
+let articleScrollspyCleanup = null;
+let articleScrollspyReturnHash = '';
+let articleScrollspyHashChanged = false;
+dialog.addEventListener('close', () => {
+  articleScrollspyCleanup?.();
+  articleScrollspyCleanup = null;
+  if (articleScrollspyHashChanged) history.replaceState(history.state, '', articleScrollspyReturnHash || `#${activePage}`);
+  articleScrollspyHashChanged = false;
+  articleScrollspyReturnHash = '';
+});
+
+function setupArticleScrollspy(article) {
+  articleScrollspyCleanup?.();
+  articleScrollspyCleanup = null;
+  if (!article) return;
+  const headings = [...article.querySelectorAll('.embed-field > h3, .guide-body h1, .guide-body h2, .guide-body h3, .guide-content h1, .guide-content h2, .guide-content h3')]
+    .filter(heading => heading.textContent.trim());
+  const targets = [...new Set(headings.map(heading => heading.closest('.embed-field') || heading))];
+  if (!targets.length) return;
+
+  const sequence = ++articleScrollspySequence;
+  const dialogContent = $('#dialog-content');
+  const layout = document.createElement('div');
+  layout.className = 'article-scrollspy-layout';
+  const rail = document.createElement('nav');
+  rail.className = 'article-scrollspy-rail';
+  rail.setAttribute('aria-label', 'On this page');
+  const title = document.createElement('h3');
+  title.className = 'article-scrollspy-title';
+  title.id = `article-scrollspy-title-${sequence}`;
+  title.textContent = 'On this page';
+  rail.setAttribute('aria-labelledby', title.id);
+  const list = document.createElement('ul');
+  list.className = 'article-scrollspy-list';
+  const links = [];
+  headings.forEach((heading, index) => {
+    const target = heading.closest('.embed-field') || heading;
+    if (target.dataset.scrollspyId) return;
+    const id = `article-section-${sequence}-${index + 1}-${slug(heading.textContent)}`;
+    target.id = id;
+    target.dataset.scrollspyId = String(sequence);
+    const item = document.createElement('li');
+    const link = document.createElement('a');
+    link.className = 'article-scrollspy-link';
+    link.href = `#${id}`;
+    link.textContent = heading.textContent.trim();
+    item.append(link);
+    list.append(item);
+    links.push({ link, target });
+  });
+  const content = document.createElement('div');
+  content.className = 'article-scrollspy-content';
+  rail.append(title, list);
+  while (dialogContent.firstChild) content.append(dialogContent.firstChild);
+  layout.append(rail, content);
+  dialogContent.append(layout);
+  article.closest('.discord-embed')?.classList.add('has-article-scrollspy');
+
+  const stickyClose = dialog.querySelector('.dialog-close');
+  let activationOffset = 58;
+  let observer = null;
+  const updateCurrent = () => {
+    const current = [...targets].filter(target => target.getBoundingClientRect().top <= activationOffset).at(-1) || targets[0];
+    links.forEach(({ link, target }) => {
+      if (target === current) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  };
+  const observeAtCurrentOffset = () => {
+    const closeStyle = stickyClose ? getComputedStyle(stickyClose) : null;
+    const stickyTop = Number.parseFloat(closeStyle?.top || '0') || 0;
+    activationOffset = Math.ceil(stickyTop + (stickyClose?.getBoundingClientRect().height || 36) + 12);
+    rail.style.setProperty('--scrollspy-sticky-offset', `${activationOffset}px`);
+    observer?.disconnect();
+    observer = typeof IntersectionObserver === 'function' ? new IntersectionObserver(updateCurrent, {
+      root: dialog,
+      rootMargin: `-${activationOffset}px 0px -60% 0px`,
+      threshold: 0
+    }) : null;
+    if (observer) targets.forEach(target => observer.observe(target));
+    updateCurrent();
+  };
+  const onRailClick = event => {
+    const link = event.target.closest('.article-scrollspy-link');
+    if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const entry = links.find(item => item.link === link);
+    if (!entry) return;
+    event.preventDefault();
+    const dialogTop = dialog.getBoundingClientRect().top;
+    const nextTop = Math.max(0, dialog.scrollTop + entry.target.getBoundingClientRect().top - dialogTop - activationOffset);
+    dialog.scrollTo({ top: nextTop, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+    history.replaceState(history.state, '', `${location.pathname}${location.search}#${entry.target.id}`);
+    articleScrollspyReturnHash ||= `#${activePage}`;
+    articleScrollspyHashChanged = true;
+    links.forEach(({ link: itemLink, target }) => {
+      if (target === entry.target) itemLink.setAttribute('aria-current', 'location');
+      else itemLink.removeAttribute('aria-current');
+    });
+  };
+  rail.addEventListener('click', onRailClick);
+  window.addEventListener('resize', observeAtCurrentOffset, { passive: true });
+  articleScrollspyReturnHash = location.hash || `#${activePage}`;
+  observeAtCurrentOffset();
+  articleScrollspyCleanup = () => {
+    observer?.disconnect();
+    rail.removeEventListener('click', onRailClick);
+    window.removeEventListener('resize', observeAtCurrentOffset);
+  };
+}
+
 function openGuide(id) {
   const guide = state.guides.find(item => item.id === id);
   if (!guide) return;
@@ -2694,6 +2903,7 @@ function openGuide(id) {
   const displaySummary = guide.category === 'regular-units' ? '' : guide.summary;
   $('#dialog-content').innerHTML = `<div class="card-category">${escapeHtml(guide.category || 'Guide')}</div><article class="discord-embed" style="--embed-accent:${accent}"><div class="embed-title-row"><h2>${escapeHtml(guide.title)}</h2>${titleThumb}</div>${underTitleThumb}${displaySummary ? `<p class="dialog-summary">${escapeHtml(displaySummary)}</p>` : ''}<div class="guide-body">${markdownToHtml(parsedSections.intro)}</div>${imagePosition === 'after-description' ? mainImage : ''}${imagePosition === 'before-sections' ? mainImage : ''}${fieldsMarkup ? `<div class="embed-fields">${fieldsMarkup}</div>` : ''}${imagePosition === 'bottom' ? mainImage : ''}</article>${(guide.tags || []).length ? `<div class="dialog-tags">${guide.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>` : ''}<div class="paste-actions">${sourceUrl ? `<a class="button button-outline" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">View original Discord message ↗</a>` : ''}<button class="button button-outline guide-delete-dialog-button" data-delete-guide="${escapeHtml(guide.id)}">Delete build</button><button class="button button-outline" data-edit-guide="${escapeHtml(guide.id)}">Edit guide</button></div>`;
   dialog.showModal();
+  setupArticleScrollspy($('#dialog-content').querySelector('.discord-embed'));
 }
 
 function deleteGuide(id) {
@@ -3180,23 +3390,27 @@ $('#sync-discord').addEventListener('click', async event => {
     const previous = state.guides;
     const merged = [...previous];
     const positions = new Map(merged.map((guide, index) => [guide.id, index]));
+    const addedGuides = [], refreshedGuides = [];
     let added = 0, updated = 0;
     for (const incoming of result.guides || []) {
       const index = positions.get(incoming.id);
       if (index === undefined) {
         positions.set(incoming.id, merged.length);
         merged.push({ ...incoming, syncManaged: true });
+        addedGuides.push(incoming);
         added++;
       } else {
         const current = merged[index];
         if (current.syncManaged && !current.localEdited && current.updatedAt !== incoming.updatedAt) {
           merged[index] = { ...incoming, syncManaged: true, favorite: current.favorite, tags: current.tags?.length ? current.tags : incoming.tags };
+          refreshedGuides.push(merged[index]);
           updated++;
         }
       }
     }
     state.guides = merged;
     if (!persist()) { state.guides = previous; render(); throw new Error('Not enough browser storage to save the synced guides.'); }
+    recordInboxUpdates(addedGuides, refreshedGuides);
     render();
     const channelSummary = Object.entries(result.counts || {}).map(([name, count]) => `${name}: ${count}`).join(' · ');
     const truncation = result.truncated ? ' Sync stopped at the per-channel history limit.' : '';
@@ -3255,27 +3469,77 @@ $('#file-input').addEventListener('change', async event => {
   }
   event.target.value = '';
 });
+function startTextScramble(target) {
+  if (!target || target.dataset.scrambleStarted === 'true') return;
+  const visual = target.querySelector('.scramble-visual');
+  const finalText = target.getAttribute('aria-label') || visual?.textContent || '';
+  if (!visual || !finalText) return;
+  target.dataset.scrambleStarted = 'true';
+
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (motionPreference.matches || typeof window.requestAnimationFrame !== 'function') {
+    visual.textContent = finalText;
+    return;
+  }
+
+  const characters = Array.from(finalText);
+  const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=';
+  const startedAt = performance.now();
+  let frameId = 0;
+  let finished = false;
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    if (frameId) window.cancelAnimationFrame(frameId);
+    visual.textContent = finalText;
+    motionPreference.removeEventListener?.('change', onMotionPreferenceChange);
+  };
+  const onMotionPreferenceChange = event => { if (event.matches) finish(); };
+  motionPreference.addEventListener?.('change', onMotionPreferenceChange);
+
+  const renderFrame = now => {
+    const elapsed = now - startedAt;
+    const lastDeadline = 1080;
+    visual.textContent = characters.map((character, index) => {
+      if (character === ' ') return character;
+      const settleDeadline = 180 + ((index + 1) / characters.length) * 900;
+      if (elapsed >= settleDeadline) return character;
+      return glyphs[Math.floor(Math.random() * glyphs.length)];
+    }).join('');
+    if (elapsed >= lastDeadline) { finish(); return; }
+    frameId = window.requestAnimationFrame(renderFrame);
+  };
+  frameId = window.requestAnimationFrame(renderFrame);
+}
+
 function setPage(page, updateHash = true) {
   if (!PAGE_TITLES[page]) page = 'home';
+  if (page === 'inbox' && inboxUpdates.some(item => !item.read)) {
+    inboxUpdates = inboxUpdates.map(item => ({ ...item, read: true }));
+    saveInboxUpdates();
+  }
   activePage = page;
+  if (page === 'home' && document.documentElement.dataset.guidebookStartupDismissed === 'true') startTextScramble($('#home-kicker'));
   document.querySelectorAll('[data-view]').forEach(view => { view.hidden = view.dataset.view !== page; });
   document.querySelectorAll('.sidebar-link[data-page]').forEach(link => {
     if (link.dataset.page === page) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
   });
-  const primaryMobilePages = ['home', 'unit-builds', 'heroine', 'artifacts'];
+  document.querySelectorAll('.header-nav-link[data-page]').forEach(link => {
+    if (link.dataset.page === page) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  });
   document.querySelectorAll('.mobile-nav-link[data-page]').forEach(link => {
     if (link.dataset.page === page) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
   });
   const moreButton = $('#mobile-more-button');
-  if (primaryMobilePages.includes(page)) moreButton.removeAttribute('aria-current');
-  else moreButton.setAttribute('aria-current', 'page');
   document.querySelectorAll('.mobile-more-link[data-page]').forEach(link => {
     if (link.dataset.page === page) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
   });
   $('#page-title').textContent = localize(PAGE_TITLES[page]);
+  if (page === 'inbox') renderInbox();
   if (page === 'guides') renderCustomGuides();
   if (page === 'guides') renderAscensionGuides();
   if (page === 'guides') renderSpendingGuides();
@@ -3300,6 +3564,22 @@ function setPage(page, updateHash = true) {
     requestAnimationFrame(() => $('#wish-banner-board').scrollIntoView({ behavior: 'smooth', block: 'start' }));
   }
 }
+
+$('#inbox-mark-read').addEventListener('click', () => {
+  inboxUpdates = inboxUpdates.map(item => ({ ...item, read: true }));
+  saveInboxUpdates();
+  renderInbox();
+});
+$('#inbox-list').addEventListener('click', event => {
+  const button = event.target.closest('[data-inbox-guide]');
+  if (!button || button.disabled) return;
+  const guideId = button.dataset.inboxGuide;
+  inboxUpdates = inboxUpdates.map(item => item.guideId === guideId ? { ...item, read: true } : item);
+  saveInboxUpdates();
+  renderInbox();
+  setPage('unit-builds');
+  openGuide(guideId);
+});
 
 document.addEventListener('click', event => {
   const pageButton = event.target.closest('[data-page]');
@@ -3543,11 +3823,40 @@ $('#sidebar-backdrop').addEventListener('click', () => setPage(activePage, false
 $('#mobile-more-button').addEventListener('click', event => {
   const menu = $('#mobile-more-dialog');
   if (menu.open) menu.close();
-  else menu.showModal();
+  else { showMobileMorePanel('root'); menu.showModal(); }
   event.currentTarget.setAttribute('aria-expanded', String(menu.open));
 });
 $('#mobile-more-close').addEventListener('click', () => $('#mobile-more-dialog').close());
-$('#mobile-more-dialog').addEventListener('close', () => $('#mobile-more-button').setAttribute('aria-expanded', 'false'));
+const mobileMoreDialog = $('#mobile-more-dialog');
+function showMobileMorePanel(name, focus = false) {
+  const panels = [...mobileMoreDialog.querySelectorAll('[data-more-panel]')];
+  const activePanel = panels.find(panel => panel.dataset.morePanel === name) || panels[0];
+  panels.forEach(panel => {
+    const isActive = panel === activePanel;
+    panel.hidden = !isActive;
+    panel.classList.toggle('is-active', isActive);
+  });
+  mobileMoreDialog.querySelector('#mobile-more-title').textContent = name === 'root'
+    ? 'More'
+    : activePanel.getAttribute('aria-label');
+  mobileMoreDialog.querySelectorAll('[data-more-open]').forEach(button => {
+    button.setAttribute('aria-expanded', String(button.dataset.moreOpen === name));
+  });
+  if (focus) requestAnimationFrame(() => activePanel.querySelector('button:not(:disabled)')?.focus());
+}
+mobileMoreDialog.addEventListener('click', event => {
+  const disclosure = event.target.closest('[data-more-open]');
+  if (disclosure) { showMobileMorePanel(disclosure.dataset.moreOpen, true); return; }
+  if (event.target.closest('[data-more-back]')) {
+    const panelName = event.target.closest('[data-more-panel]')?.dataset.morePanel;
+    showMobileMorePanel('root');
+    mobileMoreDialog.querySelector(`[data-more-open="${panelName}"]`)?.focus();
+  }
+});
+mobileMoreDialog.addEventListener('close', () => {
+  $('#mobile-more-button').setAttribute('aria-expanded', 'false');
+  showMobileMorePanel('root');
+});
 $('#mobile-more-dialog').addEventListener('click', event => { if (event.target === event.currentTarget) event.currentTarget.close(); });
 $('#mobile-add-guide').addEventListener('click', () => setPage('guides'));
 $('#mobile-sea-soul').addEventListener('click', () => setPage('sea-soul'));
@@ -4022,6 +4331,7 @@ languageObserver.observe(document.body, { childList: true, subtree: true, charac
 applyLanguage(document.body);
 async function initializeGuidebook() {
   await importBundledProfileOnFirstLaunch();
+  loadInboxUpdates();
   loadSaved(); loadTopTierIds(); loadWishBannerUnits(); loadCustomData(); render();
   const initialPage = location.hash.slice(1);
   setPage(initialPage === 'library' ? 'unit-builds' : (PAGE_TITLES[initialPage] ? initialPage : 'home'), false);
@@ -4043,7 +4353,11 @@ async function initializeGuidebook() {
       const elapsed = Date.now() - (Number(window.__guidebookStartedAt) || Date.now());
       window.setTimeout(() => {
         startupScreen.classList.add('is-exiting');
-        window.setTimeout(() => startupScreen.remove(), 350);
+        window.setTimeout(() => {
+          startupScreen.remove();
+          document.documentElement.dataset.guidebookStartupDismissed = 'true';
+          if (activePage === 'home') startTextScramble($('#home-kicker'));
+        }, 350);
       }, Math.max(0, 400 - elapsed));
     };
     // The app has rendered above; don't wait for slow remote images or window.load.
